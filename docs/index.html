@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<title>DSH Plugin Registry</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:1100px;margin:2rem auto;padding:0 1rem;color:#222}
+table{border-collapse:collapse;width:100%}
+td,th{border:1px solid #ddd;padding:.6rem .8rem;text-align:left;vertical-align:top}
+th{background:#f5f7fa}
+code{background:#f0f3f7;padding:.1rem .35rem;border-radius:4px;font-size:.85em}
+h1 small{color:#666;font-weight:normal}
+</style>
+</head>
+<body>
+<h1>DSH Plugin Registry <small>20 plugins / 20 tools</small></h1>
+<p>Protocols: MCP (stdio) · A2A v1.0 (JSON-RPC) · REST (<code>POST /invoke</code>)<br/>
+Generated at 2026-08-22T16:59:13.464Z</p>
+<table>
+<tr><th>Plugin</th><th>Description</th><th>Tools</th></tr>
+    <tr><td><b>dsh-tool-carbon-baseline</b><br/><small>v1.0.0</small></td>
+    <td>Compute tCO2e emission baselines from activity data using published factors.</td>
+    <td><code>dsh-tool-carbon-baseline.baseline</code></td></tr>
+    <tr><td><b>dsh-tool-codec-kit</b><br/><small>v1.0.0</small></td>
+    <td>Encode/decode text as base64, base64url, hex or URI component.</td>
+    <td><code>dsh-tool-codec-kit.codec</code></td></tr>
+    <tr><td><b>dsh-tool-color-kit</b><br/><small>v1.0.0</small></td>
+    <td>Color conversion (HEX/RGB/HSL), luminance and WCAG contrast checking.</td>
+    <td><code>dsh-tool-color-kit.analyze</code></td></tr>
+    <tr><td><b>dsh-tool-csv-stats</b><br/><small>v1.0.0</small></td>
+    <td>Per-column statistics for raw CSV input with numeric detection.</td>
+    <td><code>dsh-tool-csv-stats.stats</code></td></tr>
+    <tr><td><b>dsh-tool-date-math</b><br/><small>v1.0.0</small></td>
+    <td>Date arithmetic - day diffs, workday counts, date offsets, all deterministic.</td>
+    <td><code>dsh-tool-date-math.calc</code></td></tr>
+    <tr><td><b>dsh-tool-fx-rates</b><br/><small>v1.0.0</small></td>
+    <td>Currency conversion over a deterministic snapshot rate table (USD/CNY/EUR/JPY/GBP/HKD).</td>
+    <td><code>dsh-tool-fx-rates.convert</code></td></tr>
+    <tr><td><b>dsh-tool-health-metrics</b><br/><small>v1.0.0</small></td>
+    <td>BMI, BMR (Mifflin-St Jeor) and TDEE health metrics with actionable targets.</td>
+    <td><code>dsh-tool-health-metrics.metrics</code></td></tr>
+    <tr><td><b>dsh-tool-invest-growth</b><br/><small>v1.0.0</small></td>
+    <td>Compound growth projection with yearly table (lump sum + monthly contributions).</td>
+    <td><code>dsh-tool-invest-growth.project</code></td></tr>
+    <tr><td><b>dsh-tool-invoice-calc</b><br/><small>v1.0.0</small></td>
+    <td>Invoice line-item calculator with tax and discount breakdown.</td>
+    <td><code>dsh-tool-invoice-calc.calc</code></td></tr>
+    <tr><td><b>dsh-tool-json-format</b><br/><small>v1.0.0</small></td>
+    <td>Validate and pretty-print JSON payloads with deterministic formatting.</td>
+    <td><code>dsh-tool-json-format.format</code></td></tr>
+    <tr><td><b>dsh-tool-loan-calc</b><br/><small>v1.0.0</small></td>
+    <td>Loan amortization calculator with monthly payment and interest breakdown.</td>
+    <td><code>dsh-tool-loan-calc.calc</code></td></tr>
+    <tr><td><b>dsh-tool-markdown-report</b><br/><small>v1.0.0</small></td>
+    <td>Assemble structured markdown reports with mandatory disclaimer footer.</td>
+    <td><code>dsh-tool-markdown-report.report</code></td></tr>
+    <tr><td><b>dsh-tool-pass-forge</b><br/><small>v1.0.0</small></td>
+    <td>Deterministic (seeded) or crypto-random password generation with entropy scoring.</td>
+    <td><code>dsh-tool-pass-forge.generate</code></td></tr>
+    <tr><td><b>dsh-tool-readability</b><br/><small>v1.0.0</small></td>
+    <td>Text readability metrics - sentence stats, density, reading time for CJK and Latin text.</td>
+    <td><code>dsh-tool-readability.analyze</code></td></tr>
+    <tr><td><b>dsh-tool-regex-lab</b><br/><small>v1.0.0</small></td>
+    <td>Test regular expressions with match listing, capture groups and positions.</td>
+    <td><code>dsh-tool-regex-lab.test</code></td></tr>
+    <tr><td><b>dsh-tool-salary-tax</b><br/><small>v1.0.0</small></td>
+    <td>China salary breakdown - social insurance, housing fund and IIT withholding.</td>
+    <td><code>dsh-tool-salary-tax.calc</code></td></tr>
+    <tr><td><b>dsh-tool-seo-audit</b><br/><small>v1.0.0</small></td>
+    <td>On-page SEO audit with scoring across title, meta, keywords and content length.</td>
+    <td><code>dsh-tool-seo-audit.audit</code></td></tr>
+    <tr><td><b>dsh-tool-text-diff</b><br/><small>v1.0.0</small></td>
+    <td>Compare two texts and report similarity and change statistics.</td>
+    <td><code>dsh-tool-text-diff.diff</code></td></tr>
+    <tr><td><b>dsh-tool-text-summary</b><br/><small>v1.0.0</small></td>
+    <td>Deterministic extractive summarizer - scores sentences by keyword frequency, outputs structured bullets.</td>
+    <td><code>dsh-tool-text-summary.summarize</code></td></tr>
+    <tr><td><b>dsh-tool-unit-convert</b><br/><small>v1.0.0</small></td>
+    <td>Deterministic unit conversions across length, weight, temperature and data size.</td>
+    <td><code>dsh-tool-unit-convert.convert</code></td></tr>
+</table>
+<p><small>免责声明：所有工具输出由确定性算法生成，仅供参考。</small></p>
+</body>
+</html>

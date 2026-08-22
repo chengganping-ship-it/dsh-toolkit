@@ -1,0 +1,294 @@
+{
+  "generatedAt": "2026-08-22T16:59:13.464Z",
+  "protocol": {
+    "mcp": "stdio via official @modelcontextprotocol/sdk",
+    "a2a": "v1.0 JSON-RPC via official @a2a-js/sdk",
+    "rest": "POST /invoke {tool, input_data}"
+  },
+  "counts": {
+    "plugins": 20,
+    "tools": 20
+  },
+  "plugins": [
+    {
+      "plugin": "dsh-tool-carbon-baseline",
+      "version": "1.0.0",
+      "description": "Compute tCO2e emission baselines from activity data using published factors.",
+      "tools": [
+        {
+          "name": "dsh-tool-carbon-baseline.baseline",
+          "description": "Invoke baseline",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-codec-kit",
+      "version": "1.0.0",
+      "description": "Encode/decode text as base64, base64url, hex or URI component.",
+      "tools": [
+        {
+          "name": "dsh-tool-codec-kit.codec",
+          "description": "Invoke codec",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-color-kit",
+      "version": "1.0.0",
+      "description": "Color conversion (HEX/RGB/HSL), luminance and WCAG contrast checking.",
+      "tools": [
+        {
+          "name": "dsh-tool-color-kit.analyze",
+          "description": "Invoke analyze",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-csv-stats",
+      "version": "1.0.0",
+      "description": "Per-column statistics for raw CSV input with numeric detection.",
+      "tools": [
+        {
+          "name": "dsh-tool-csv-stats.stats",
+          "description": "Invoke stats",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-date-math",
+      "version": "1.0.0",
+      "description": "Date arithmetic - day diffs, workday counts, date offsets, all deterministic.",
+      "tools": [
+        {
+          "name": "dsh-tool-date-math.calc",
+          "description": "Invoke calc",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-fx-rates",
+      "version": "1.0.0",
+      "description": "Currency conversion over a deterministic snapshot rate table (USD/CNY/EUR/JPY/GBP/HKD).",
+      "tools": [
+        {
+          "name": "dsh-tool-fx-rates.convert",
+          "description": "Invoke convert",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-health-metrics",
+      "version": "1.0.0",
+      "description": "BMI, BMR (Mifflin-St Jeor) and TDEE health metrics with actionable targets.",
+      "tools": [
+        {
+          "name": "dsh-tool-health-metrics.metrics",
+          "description": "Invoke metrics",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-invest-growth",
+      "version": "1.0.0",
+      "description": "Compound growth projection with yearly table (lump sum + monthly contributions).",
+      "tools": [
+        {
+          "name": "dsh-tool-invest-growth.project",
+          "description": "Invoke project",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-invoice-calc",
+      "version": "1.0.0",
+      "description": "Invoice line-item calculator with tax and discount breakdown.",
+      "tools": [
+        {
+          "name": "dsh-tool-invoice-calc.calc",
+          "description": "Invoke calc",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-json-format",
+      "version": "1.0.0",
+      "description": "Validate and pretty-print JSON payloads with deterministic formatting.",
+      "tools": [
+        {
+          "name": "dsh-tool-json-format.format",
+          "description": "Invoke format",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-loan-calc",
+      "version": "1.0.0",
+      "description": "Loan amortization calculator with monthly payment and interest breakdown.",
+      "tools": [
+        {
+          "name": "dsh-tool-loan-calc.calc",
+          "description": "Invoke calc",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-markdown-report",
+      "version": "1.0.0",
+      "description": "Assemble structured markdown reports with mandatory disclaimer footer.",
+      "tools": [
+        {
+          "name": "dsh-tool-markdown-report.report",
+          "description": "Invoke report",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-pass-forge",
+      "version": "1.0.0",
+      "description": "Deterministic (seeded) or crypto-random password generation with entropy scoring.",
+      "tools": [
+        {
+          "name": "dsh-tool-pass-forge.generate",
+          "description": "Invoke generate",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-readability",
+      "version": "1.0.0",
+      "description": "Text readability metrics - sentence stats, density, reading time for CJK and Latin text.",
+      "tools": [
+        {
+          "name": "dsh-tool-readability.analyze",
+          "description": "Invoke analyze",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-regex-lab",
+      "version": "1.0.0",
+      "description": "Test regular expressions with match listing, capture groups and positions.",
+      "tools": [
+        {
+          "name": "dsh-tool-regex-lab.test",
+          "description": "Invoke test",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-salary-tax",
+      "version": "1.0.0",
+      "description": "China salary breakdown - social insurance, housing fund and IIT withholding.",
+      "tools": [
+        {
+          "name": "dsh-tool-salary-tax.calc",
+          "description": "Invoke calc",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-seo-audit",
+      "version": "1.0.0",
+      "description": "On-page SEO audit with scoring across title, meta, keywords and content length.",
+      "tools": [
+        {
+          "name": "dsh-tool-seo-audit.audit",
+          "description": "Invoke audit",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-text-diff",
+      "version": "1.0.0",
+      "description": "Compare two texts and report similarity and change statistics.",
+      "tools": [
+        {
+          "name": "dsh-tool-text-diff.diff",
+          "description": "Invoke diff",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-text-summary",
+      "version": "1.0.0",
+      "description": "Deterministic extractive summarizer - scores sentences by keyword frequency, outputs structured bullets.",
+      "tools": [
+        {
+          "name": "dsh-tool-text-summary.summarize",
+          "description": "Invoke summarize",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-unit-convert",
+      "version": "1.0.0",
+      "description": "Deterministic unit conversions across length, weight, temperature and data size.",
+      "tools": [
+        {
+          "name": "dsh-tool-unit-convert.convert",
+          "description": "Invoke convert",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    }
+  ]
+}
