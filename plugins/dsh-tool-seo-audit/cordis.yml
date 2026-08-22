@@ -1,0 +1,6 @@
+name: dsh-tool-seo-audit
+version: 1.0.0
+description: On-page SEO audit with scoring across title, meta, keywords and content length.
+public: true
+tools:
+  - audit

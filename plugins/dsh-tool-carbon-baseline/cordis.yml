@@ -1,0 +1,6 @@
+name: dsh-tool-carbon-baseline
+version: 1.0.0
+description: Compute tCO2e emission baselines from activity data using published factors.
+public: true
+tools:
+  - baseline

@@ -1,0 +1,6 @@
+name: dsh-tool-fx-rates
+version: 1.0.0
+description: Currency conversion over a deterministic snapshot rate table (USD/CNY/EUR/JPY/GBP/HKD).
+public: true
+tools:
+  - convert

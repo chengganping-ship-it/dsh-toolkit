@@ -1,0 +1,6 @@
+name: dsh-tool-color-kit
+version: 1.0.0
+description: Color conversion (HEX/RGB/HSL), luminance and WCAG contrast checking.
+public: true
+tools:
+  - analyze

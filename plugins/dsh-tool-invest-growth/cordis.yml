@@ -1,0 +1,6 @@
+name: dsh-tool-invest-growth
+version: 1.0.0
+description: Compound growth projection with yearly table (lump sum + monthly contributions).
+public: true
+tools:
+  - project

@@ -1,0 +1,33 @@
+{
+  "name": "dsh-toolkit",
+  "version": "1.0.0",
+  "description": "DSH Plugin Toolkit - 5-layer infrastructure: MCP Bridge, A2A Cards, Loop Engineering, Cost Governance, Multi-Agent Orchestration",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "dsh": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prebuild": "node scripts/build-plugins.js",
+    "test": "tsc -p tsconfig.test.json && node --test \"dist-test/test/*.test.js\"",
+    "bridge": "node dist/bridge/server.js",
+    "a2a:gen": "node dist/cli.js a2a gen",
+    "demo": "node dist/cli.js demo carbon",
+    "scaffold": "node dist/cli.js scaffold"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.5.0"
+  },
+  "dependencies": {
+    "@a2a-js/sdk": "^1.0.1",
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "express": "^5.2.1",
+    "zod": "^4.4.3"
+  }
+}

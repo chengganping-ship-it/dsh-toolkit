@@ -1,0 +1,6 @@
+name: dsh-tool-codec-kit
+version: 1.0.0
+description: Encode/decode text as base64, base64url, hex or URI component.
+public: true
+tools:
+  - codec

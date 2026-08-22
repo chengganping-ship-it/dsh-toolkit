@@ -1,0 +1,6 @@
+name: dsh-tool-unit-convert
+version: 1.0.0
+description: Deterministic unit conversions across length, weight, temperature and data size.
+public: true
+tools:
+  - convert

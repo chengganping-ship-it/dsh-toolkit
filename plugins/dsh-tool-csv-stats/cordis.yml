@@ -1,0 +1,6 @@
+name: dsh-tool-csv-stats
+version: 1.0.0
+description: Per-column statistics for raw CSV input with numeric detection.
+public: true
+tools:
+  - stats

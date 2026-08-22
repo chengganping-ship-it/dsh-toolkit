@@ -1,0 +1,36 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-fund --no-audit
+      - run: npm run build
+      - run: npm test
+      - name: Smoke - discovery, a2a, pack
+        run: |
+          node dist/cli.js list
+          node dist/cli.js a2a gen
+          node dist/cli.js pack dsh-tool-text-summary
+      - name: MCP bridge protocol smoke
+        run: |
+          printf '%s\n%s\n' \
+            '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}' \
+            '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}' \
+            | node dist/bridge/server.js > out.jsonl || true
+          grep -q '"tools"' out.jsonl && echo "tools/list OK"
+      - name: Determinism check
+        run: |
+          node dist/cli.js demo carbon >/dev/null 2>&1
+          H1=$(sha256sum carbon-strategy-report.md | cut -d' ' -f1)
+          node dist/cli.js demo carbon >/dev/null 2>&1
+          H2=$(sha256sum carbon-strategy-report.md | cut -d' ' -f1)
+          test "$H1" = "$H2" && echo "deterministic OK"

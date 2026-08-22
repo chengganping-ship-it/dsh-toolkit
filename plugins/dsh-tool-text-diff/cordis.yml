@@ -1,0 +1,6 @@
+name: dsh-tool-text-diff
+version: 1.0.0
+description: Compare two texts and report similarity and change statistics.
+public: true
+tools:
+  - diff

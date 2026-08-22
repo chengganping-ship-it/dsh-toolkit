@@ -1,0 +1,6 @@
+name: dsh-tool-date-math
+version: 1.0.0
+description: Date arithmetic - day diffs, workday counts, date offsets, all deterministic.
+public: true
+tools:
+  - calc

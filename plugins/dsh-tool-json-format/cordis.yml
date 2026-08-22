@@ -1,0 +1,6 @@
+name: dsh-tool-json-format
+version: 1.0.0
+description: Validate and pretty-print JSON payloads with deterministic formatting.
+public: true
+tools:
+  - format

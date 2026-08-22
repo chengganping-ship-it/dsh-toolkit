@@ -1,0 +1,6 @@
+name: dsh-tool-invoice-calc
+version: 1.0.0
+description: Invoice line-item calculator with tax and discount breakdown.
+public: true
+tools:
+  - calc

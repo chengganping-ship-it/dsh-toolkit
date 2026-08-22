@@ -1,0 +1,6 @@
+name: dsh-tool-markdown-report
+version: 1.0.0
+description: Assemble structured markdown reports with mandatory disclaimer footer.
+public: true
+tools:
+  - report

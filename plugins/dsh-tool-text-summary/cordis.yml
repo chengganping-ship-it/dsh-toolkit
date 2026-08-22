@@ -1,0 +1,6 @@
+name: dsh-tool-text-summary
+version: 1.0.0
+description: Deterministic extractive summarizer - scores sentences by keyword frequency, outputs structured bullets.
+public: true
+tools:
+  - summarize

@@ -1,0 +1,6 @@
+name: dsh-tool-regex-lab
+version: 1.0.0
+description: Test regular expressions with match listing, capture groups and positions.
+public: true
+tools:
+  - test

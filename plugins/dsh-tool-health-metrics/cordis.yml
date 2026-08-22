@@ -1,0 +1,6 @@
+name: dsh-tool-health-metrics
+version: 1.0.0
+description: BMI, BMR (Mifflin-St Jeor) and TDEE health metrics with actionable targets.
+public: true
+tools:
+  - metrics

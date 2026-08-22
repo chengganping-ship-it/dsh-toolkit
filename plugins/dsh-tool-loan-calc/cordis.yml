@@ -1,0 +1,6 @@
+name: dsh-tool-loan-calc
+version: 1.0.0
+description: Loan amortization calculator with monthly payment and interest breakdown.
+public: true
+tools:
+  - calc

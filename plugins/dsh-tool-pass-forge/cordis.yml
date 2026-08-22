@@ -1,0 +1,6 @@
+name: dsh-tool-pass-forge
+version: 1.0.0
+description: Deterministic (seeded) or crypto-random password generation with entropy scoring.
+public: true
+tools:
+  - generate

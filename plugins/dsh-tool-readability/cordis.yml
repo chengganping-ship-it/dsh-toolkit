@@ -1,0 +1,6 @@
+name: dsh-tool-readability
+version: 1.0.0
+description: Text readability metrics - sentence stats, density, reading time for CJK and Latin text.
+public: true
+tools:
+  - analyze

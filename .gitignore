@@ -1,0 +1,10 @@
+node_modules/
+dist/
+dist-test/
+publish/
+a2a-cards/
+registry/
+carbon-strategy-report*.md
+a2a-stderr.log
+*.log
+*.tsbuildinfo

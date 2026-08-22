@@ -1,0 +1,6 @@
+name: dsh-tool-salary-tax
+version: 1.0.0
+description: China salary breakdown - social insurance, housing fund and IIT withholding.
+public: true
+tools:
+  - calc
