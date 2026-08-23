@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-22T16:59:13.464Z",
+  "generatedAt": "2026-08-23T14:18:37.689Z",
   "protocol": {
     "mcp": "stdio via official @modelcontextprotocol/sdk",
     "a2a": "v1.0 JSON-RPC via official @a2a-js/sdk",
