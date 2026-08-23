@@ -34,3 +34,11 @@ jobs:
           node dist/cli.js demo carbon >/dev/null 2>&1
           H2=$(sha256sum carbon-strategy-report.md | cut -d' ' -f1)
           test "$H1" = "$H2" && echo "deterministic OK"
+      - name: Refresh docs catalog
+        run: node dist/cli.js registry gen docs
+      - name: Commit catalog
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs
+          git diff --cached --quiet || (git commit -m "chore: refresh registry catalog [skip ci]" && git push)

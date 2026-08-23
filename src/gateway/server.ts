@@ -2,6 +2,7 @@ import express from 'express';
 import { discoverPlugins, flattenTools } from '../bridge/loader.js';
 import { runWithLoop } from '../loop/runner.js';
 import { CostGovernor, CostExceededError } from '../cost/governor.js';
+import { loadKeys, verifyKey, appendUsage, readUsage } from './keys.js';
 
 export interface RateBucket {
   count: number;
@@ -49,8 +50,13 @@ export async function createGatewayApp(): Promise<express.Express> {
     res.json({
       ok: true,
       tools: registry.size,
+      authMode: loadKeys().length > 0 ? 'key-required' : 'open',
       cost: governor.snapshot(),
     });
+  });
+
+  app.get('/usage', (_req, res) => {
+    res.json(readUsage());
   });
 
   app.get('/tools', (_req, res) => {
@@ -65,23 +71,44 @@ export async function createGatewayApp(): Promise<express.Express> {
   });
 
   app.post('/invoke', async (req, res) => {
-    const apiKey = String(req.header('X-API-Key') ?? 'anonymous');
-    if (rateLimited(apiKey)) {
+    const rawKey = String(req.header('X-API-Key') ?? 'anonymous');
+    const keyStore = loadKeys();
+    let identity = rawKey;
+    if (keyStore.length > 0) {
+      const rec = verifyKey(rawKey);
+      if (!rec) {
+        res.status(401).json({ error: 'invalid or revoked API key' });
+        return;
+      }
+      identity = rec.name;
+    }
+    if (rateLimited(identity)) {
       res.status(429).json({ error: 'rate limit exceeded', limit: `${RATE_LIMIT}/min` });
       return;
     }
     const tool = String(req.body?.['tool'] ?? '');
     const inputData =
       typeof req.body?.['input_data'] === 'string' ? req.body['input_data'] : '';
-    const userKey = String(req.body?.['userKey'] ?? apiKey);
+    const userKey = String(req.body?.['userKey'] ?? identity);
     const entry = registry.get(tool);
 
+    const finish = (status: number, payload: Record<string, unknown>) => {
+      appendUsage({
+        ts: new Date().toISOString(),
+        key: userKey,
+        tool,
+        tokens: Math.ceil((inputData.length + JSON.stringify(payload).length) / 4),
+        status,
+      });
+      res.status(status).json(payload);
+    };
+
     if (!entry) {
-      res.status(404).json({ error: `unknown tool: ${tool}` });
+      finish(404, { error: `unknown tool: ${tool}` });
       return;
     }
     if (!entry.handler) {
-      res.status(409).json({ error: `tool ${tool} has no executable handler` });
+      finish(409, { error: `tool ${tool} has no executable handler` });
       return;
     }
 
@@ -91,7 +118,7 @@ export async function createGatewayApp(): Promise<express.Express> {
         () => entry.handler!(inputData),
         { maxRetries: 2 },
       );
-      res.json({
+      finish(200, {
         tool,
         output: r.output,
         attempts: r.attempts,
@@ -100,10 +127,10 @@ export async function createGatewayApp(): Promise<express.Express> {
       });
     } catch (e) {
       if (e instanceof CostExceededError) {
-        res.status(402).json({ error: e.message });
+        finish(402, { error: e.message });
         return;
       }
-      res.status(500).json({ error: String(e) });
+      finish(500, { error: String(e) });
     }
   });
 

@@ -1,12 +1,30 @@
 {
   "name": "dsh-toolkit",
-  "version": "1.0.0",
-  "description": "DSH Plugin Toolkit - 5-layer infrastructure: MCP Bridge, A2A Cards, Loop Engineering, Cost Governance, Multi-Agent Orchestration",
+  "version": "2.0.0",
+  "description": "DSH Plugin Toolkit - 20 deterministic tools served via MCP / A2A v1.0 / REST gateway, with loop engineering and cost governance",
   "type": "module",
-  "main": "dist/index.js",
+  "main": "dist/cli.js",
   "bin": {
     "dsh": "dist/cli.js"
   },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chengganping-ship-it/dsh-toolkit.git"
+  },
+  "keywords": [
+    "mcp",
+    "a2a",
+    "agent",
+    "toolkit",
+    "plugins",
+    "koishi",
+    "ollama"
+  ],
   "scripts": {
     "build": "tsc",
     "prebuild": "node scripts/build-plugins.js",

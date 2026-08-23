@@ -7,6 +7,12 @@ import { scaffoldPlugin } from './scaffold.js';
 import { packKoishi } from './pack.js';
 import { startA2AServer } from './a2a/server.js';
 import { startGateway } from './gateway/server.js';
+import {
+  createKey,
+  revokeKey,
+  loadKeys,
+  readUsage,
+} from './gateway/keys.js';
 import { generateRegistry } from './registry.js';
 import {
   ollamaAvailable,
@@ -25,6 +31,9 @@ Usage:
   dsh a2a serve [port]     Start real A2A v1.0 server (@a2a-js/sdk, default :41241)
   dsh demo carbon [--llm]  Run L5 multi-agent demo (--llm = local Ollama synthesis)
   dsh serve [port]         REST gateway: POST /invoke with API-key billing (:8787)
+  dsh keys create <name> [quotaTokens]  Create API key (empty file = open mode)
+  dsh keys list            List API keys and usage aggregates
+  dsh keys revoke <name|key>            Revoke an API key
   dsh registry gen         Generate marketplace catalog (registry.json + index.html)
   dsh scaffold <name>      Scaffold a new dsh-tool-<name> plugin (loop-dev entry)
   dsh pack <dir-name>      Build publish-ready Koishi marketplace package
@@ -83,6 +92,41 @@ async function main(): Promise<void> {
       const port = Number(args[0]) || 8787;
       await startGateway(port);
       setInterval(() => {}, 1 << 30);
+      break;
+    }
+    case 'keys': {
+      const sub = args[0];
+      if (sub === 'create') {
+        if (!args[1]) {
+          console.error('Usage: dsh keys create <name> [quotaTokens]');
+          process.exitCode = 1;
+          break;
+        }
+        const quota = args[2] ? Number(args[2]) : null;
+        const rec = createKey(args[1], Number.isFinite(quota as number) ? (quota as number) : null);
+        console.log(`API key created for "${rec.name}":`);
+        console.log(`  ${rec.key}`);
+        console.log(`  quota: ${rec.quotaTokens ?? 'unlimited'} tokens`);
+      } else if (sub === 'list') {
+        const all = loadKeys();
+        const usage = readUsage();
+        if (all.length === 0) console.log('(no keys - gateway is in open mode)');
+        for (const r of all) {
+          const u = usage.byKey[r.name];
+          console.log(
+            `${r.revoked ? '[REVOKED]' : '[ACTIVE ]'} ${r.name.padEnd(16)} key=${r.key.slice(0, 12)}... quota=${r.quotaTokens ?? '-'} calls=${u?.calls ?? 0} tokens=${u?.tokens ?? 0}`,
+          );
+        }
+      } else if (sub === 'revoke') {
+        if (!args[1]) {
+          console.error('Usage: dsh keys revoke <name|key>');
+          process.exitCode = 1;
+          break;
+        }
+        console.log(revokeKey(args[1]) ? 'revoked' : 'not found');
+      } else {
+        console.error(HELP);
+      }
       break;
     }
     case 'registry':
