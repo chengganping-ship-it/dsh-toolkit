@@ -1,0 +1,533 @@
+{
+  "builtAt": "2026-09-21T07:56:23.121Z",
+  "embedder": "ollama:nomic-embed-text",
+  "nodes": [
+    {
+      "id": "dsh-tool-carbon-baseline.baseline",
+      "plugin": "dsh-tool-carbon-baseline",
+      "tool": "baseline",
+      "description": "Invoke baseline",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-codec-kit.codec",
+      "plugin": "dsh-tool-codec-kit",
+      "tool": "codec",
+      "description": "Invoke codec",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-color-kit.analyze",
+      "plugin": "dsh-tool-color-kit",
+      "tool": "analyze",
+      "description": "Invoke analyze",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-csv-stats.stats",
+      "plugin": "dsh-tool-csv-stats",
+      "tool": "stats",
+      "description": "Invoke stats",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-date-math.calc",
+      "plugin": "dsh-tool-date-math",
+      "tool": "calc",
+      "description": "Invoke calc",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-fx-rates.convert",
+      "plugin": "dsh-tool-fx-rates",
+      "tool": "convert",
+      "description": "Invoke convert",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-health-metrics.metrics",
+      "plugin": "dsh-tool-health-metrics",
+      "tool": "metrics",
+      "description": "Invoke metrics",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-invest-growth.project",
+      "plugin": "dsh-tool-invest-growth",
+      "tool": "project",
+      "description": "Invoke project",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-invoice-calc.calc",
+      "plugin": "dsh-tool-invoice-calc",
+      "tool": "calc",
+      "description": "Invoke calc",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-json-format.format",
+      "plugin": "dsh-tool-json-format",
+      "tool": "format",
+      "description": "Invoke format",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-laya-scene.scene",
+      "plugin": "dsh-tool-laya-scene",
+      "tool": "scene",
+      "description": "Invoke scene",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-loan-calc.calc",
+      "plugin": "dsh-tool-loan-calc",
+      "tool": "calc",
+      "description": "Invoke calc",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-markdown-report.report",
+      "plugin": "dsh-tool-markdown-report",
+      "tool": "report",
+      "description": "Invoke report",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-pass-forge.generate",
+      "plugin": "dsh-tool-pass-forge",
+      "tool": "generate",
+      "description": "Invoke generate",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-readability.analyze",
+      "plugin": "dsh-tool-readability",
+      "tool": "analyze",
+      "description": "Invoke analyze",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-regex-lab.test",
+      "plugin": "dsh-tool-regex-lab",
+      "tool": "test",
+      "description": "Invoke test",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-salary-tax.calc",
+      "plugin": "dsh-tool-salary-tax",
+      "tool": "calc",
+      "description": "Invoke calc",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-seo-audit.audit",
+      "plugin": "dsh-tool-seo-audit",
+      "tool": "audit",
+      "description": "Invoke audit",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-text-diff.diff",
+      "plugin": "dsh-tool-text-diff",
+      "tool": "diff",
+      "description": "Invoke diff",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-text-summary.summarize",
+      "plugin": "dsh-tool-text-summary",
+      "tool": "summarize",
+      "description": "Invoke summarize",
+      "embedding": null
+    },
+    {
+      "id": "dsh-tool-unit-convert.convert",
+      "plugin": "dsh-tool-unit-convert",
+      "tool": "convert",
+      "description": "Invoke convert",
+      "embedding": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "dsh-tool-carbon-baseline.baseline",
+      "target": "dsh-tool-health-metrics.metrics",
+      "predicate": "complements",
+      "score": 0.6992
+    },
+    {
+      "source": "dsh-tool-carbon-baseline.baseline",
+      "target": "dsh-tool-csv-stats.stats",
+      "predicate": "complements",
+      "score": 0.6906
+    },
+    {
+      "source": "dsh-tool-carbon-baseline.baseline",
+      "target": "dsh-tool-color-kit.analyze",
+      "predicate": "complements",
+      "score": 0.6897
+    },
+    {
+      "source": "dsh-tool-codec-kit.codec",
+      "target": "dsh-tool-color-kit.analyze",
+      "predicate": "complements",
+      "score": 0.7779
+    },
+    {
+      "source": "dsh-tool-codec-kit.codec",
+      "target": "dsh-tool-unit-convert.convert",
+      "predicate": "complements",
+      "score": 0.7503
+    },
+    {
+      "source": "dsh-tool-codec-kit.codec",
+      "target": "dsh-tool-json-format.format",
+      "predicate": "complements",
+      "score": 0.7341
+    },
+    {
+      "source": "dsh-tool-color-kit.analyze",
+      "target": "dsh-tool-readability.analyze",
+      "predicate": "complements",
+      "score": 0.7843
+    },
+    {
+      "source": "dsh-tool-color-kit.analyze",
+      "target": "dsh-tool-codec-kit.codec",
+      "predicate": "complements",
+      "score": 0.7779
+    },
+    {
+      "source": "dsh-tool-color-kit.analyze",
+      "target": "dsh-tool-unit-convert.convert",
+      "predicate": "complements",
+      "score": 0.725
+    },
+    {
+      "source": "dsh-tool-csv-stats.stats",
+      "target": "dsh-tool-health-metrics.metrics",
+      "predicate": "complements",
+      "score": 0.7582
+    },
+    {
+      "source": "dsh-tool-csv-stats.stats",
+      "target": "dsh-tool-invoice-calc.calc",
+      "predicate": "complements",
+      "score": 0.734
+    },
+    {
+      "source": "dsh-tool-csv-stats.stats",
+      "target": "dsh-tool-salary-tax.calc",
+      "predicate": "complements",
+      "score": 0.7322
+    },
+    {
+      "source": "dsh-tool-date-math.calc",
+      "target": "dsh-tool-loan-calc.calc",
+      "predicate": "feeds_into",
+      "score": 0.8646
+    },
+    {
+      "source": "dsh-tool-date-math.calc",
+      "target": "dsh-tool-invoice-calc.calc",
+      "predicate": "feeds_into",
+      "score": 0.8208
+    },
+    {
+      "source": "dsh-tool-date-math.calc",
+      "target": "dsh-tool-salary-tax.calc",
+      "predicate": "feeds_into",
+      "score": 0.8141
+    },
+    {
+      "source": "dsh-tool-fx-rates.convert",
+      "target": "dsh-tool-unit-convert.convert",
+      "predicate": "complements",
+      "score": 0.8472
+    },
+    {
+      "source": "dsh-tool-fx-rates.convert",
+      "target": "dsh-tool-invoice-calc.calc",
+      "predicate": "complements",
+      "score": 0.7374
+    },
+    {
+      "source": "dsh-tool-fx-rates.convert",
+      "target": "dsh-tool-loan-calc.calc",
+      "predicate": "complements",
+      "score": 0.7274
+    },
+    {
+      "source": "dsh-tool-health-metrics.metrics",
+      "target": "dsh-tool-csv-stats.stats",
+      "predicate": "complements",
+      "score": 0.7582
+    },
+    {
+      "source": "dsh-tool-health-metrics.metrics",
+      "target": "dsh-tool-seo-audit.audit",
+      "predicate": "complements",
+      "score": 0.737
+    },
+    {
+      "source": "dsh-tool-health-metrics.metrics",
+      "target": "dsh-tool-readability.analyze",
+      "predicate": "complements",
+      "score": 0.7294
+    },
+    {
+      "source": "dsh-tool-invest-growth.project",
+      "target": "dsh-tool-loan-calc.calc",
+      "predicate": "feeds_into",
+      "score": 0.7043
+    },
+    {
+      "source": "dsh-tool-invest-growth.project",
+      "target": "dsh-tool-pass-forge.generate",
+      "predicate": "feeds_into",
+      "score": 0.6892
+    },
+    {
+      "source": "dsh-tool-invest-growth.project",
+      "target": "dsh-tool-unit-convert.convert",
+      "predicate": "complements",
+      "score": 0.6847
+    },
+    {
+      "source": "dsh-tool-invoice-calc.calc",
+      "target": "dsh-tool-loan-calc.calc",
+      "predicate": "feeds_into",
+      "score": 0.863
+    },
+    {
+      "source": "dsh-tool-invoice-calc.calc",
+      "target": "dsh-tool-salary-tax.calc",
+      "predicate": "feeds_into",
+      "score": 0.8304
+    },
+    {
+      "source": "dsh-tool-invoice-calc.calc",
+      "target": "dsh-tool-date-math.calc",
+      "predicate": "feeds_into",
+      "score": 0.8208
+    },
+    {
+      "source": "dsh-tool-json-format.format",
+      "target": "dsh-tool-unit-convert.convert",
+      "predicate": "complements",
+      "score": 0.7459
+    },
+    {
+      "source": "dsh-tool-json-format.format",
+      "target": "dsh-tool-codec-kit.codec",
+      "predicate": "complements",
+      "score": 0.7341
+    },
+    {
+      "source": "dsh-tool-json-format.format",
+      "target": "dsh-tool-text-diff.diff",
+      "predicate": "complements",
+      "score": 0.7273
+    },
+    {
+      "source": "dsh-tool-laya-scene.scene",
+      "target": "dsh-tool-codec-kit.codec",
+      "predicate": "complements",
+      "score": 0.7268
+    },
+    {
+      "source": "dsh-tool-laya-scene.scene",
+      "target": "dsh-tool-color-kit.analyze",
+      "predicate": "complements",
+      "score": 0.7156
+    },
+    {
+      "source": "dsh-tool-laya-scene.scene",
+      "target": "dsh-tool-unit-convert.convert",
+      "predicate": "complements",
+      "score": 0.7149
+    },
+    {
+      "source": "dsh-tool-loan-calc.calc",
+      "target": "dsh-tool-date-math.calc",
+      "predicate": "feeds_into",
+      "score": 0.8646
+    },
+    {
+      "source": "dsh-tool-loan-calc.calc",
+      "target": "dsh-tool-invoice-calc.calc",
+      "predicate": "feeds_into",
+      "score": 0.863
+    },
+    {
+      "source": "dsh-tool-loan-calc.calc",
+      "target": "dsh-tool-salary-tax.calc",
+      "predicate": "feeds_into",
+      "score": 0.8409
+    },
+    {
+      "source": "dsh-tool-markdown-report.report",
+      "target": "dsh-tool-text-summary.summarize",
+      "predicate": "complements",
+      "score": 0.7126
+    },
+    {
+      "source": "dsh-tool-markdown-report.report",
+      "target": "dsh-tool-json-format.format",
+      "predicate": "complements",
+      "score": 0.6911
+    },
+    {
+      "source": "dsh-tool-markdown-report.report",
+      "target": "dsh-tool-unit-convert.convert",
+      "predicate": "complements",
+      "score": 0.6891
+    },
+    {
+      "source": "dsh-tool-pass-forge.generate",
+      "target": "dsh-tool-unit-convert.convert",
+      "predicate": "complements",
+      "score": 0.7388
+    },
+    {
+      "source": "dsh-tool-pass-forge.generate",
+      "target": "dsh-tool-text-diff.diff",
+      "predicate": "complements",
+      "score": 0.7038
+    },
+    {
+      "source": "dsh-tool-pass-forge.generate",
+      "target": "dsh-tool-laya-scene.scene",
+      "predicate": "complements",
+      "score": 0.6921
+    },
+    {
+      "source": "dsh-tool-readability.analyze",
+      "target": "dsh-tool-color-kit.analyze",
+      "predicate": "complements",
+      "score": 0.7843
+    },
+    {
+      "source": "dsh-tool-readability.analyze",
+      "target": "dsh-tool-unit-convert.convert",
+      "predicate": "complements",
+      "score": 0.748
+    },
+    {
+      "source": "dsh-tool-readability.analyze",
+      "target": "dsh-tool-health-metrics.metrics",
+      "predicate": "complements",
+      "score": 0.7294
+    },
+    {
+      "source": "dsh-tool-regex-lab.test",
+      "target": "dsh-tool-unit-convert.convert",
+      "predicate": "complements",
+      "score": 0.7409
+    },
+    {
+      "source": "dsh-tool-regex-lab.test",
+      "target": "dsh-tool-csv-stats.stats",
+      "predicate": "complements",
+      "score": 0.7246
+    },
+    {
+      "source": "dsh-tool-regex-lab.test",
+      "target": "dsh-tool-readability.analyze",
+      "predicate": "complements",
+      "score": 0.7225
+    },
+    {
+      "source": "dsh-tool-salary-tax.calc",
+      "target": "dsh-tool-loan-calc.calc",
+      "predicate": "feeds_into",
+      "score": 0.8409
+    },
+    {
+      "source": "dsh-tool-salary-tax.calc",
+      "target": "dsh-tool-invoice-calc.calc",
+      "predicate": "feeds_into",
+      "score": 0.8304
+    },
+    {
+      "source": "dsh-tool-salary-tax.calc",
+      "target": "dsh-tool-date-math.calc",
+      "predicate": "feeds_into",
+      "score": 0.8141
+    },
+    {
+      "source": "dsh-tool-seo-audit.audit",
+      "target": "dsh-tool-health-metrics.metrics",
+      "predicate": "validates",
+      "score": 0.737
+    },
+    {
+      "source": "dsh-tool-seo-audit.audit",
+      "target": "dsh-tool-regex-lab.test",
+      "predicate": "validates",
+      "score": 0.7077
+    },
+    {
+      "source": "dsh-tool-seo-audit.audit",
+      "target": "dsh-tool-csv-stats.stats",
+      "predicate": "validates",
+      "score": 0.7067
+    },
+    {
+      "source": "dsh-tool-text-diff.diff",
+      "target": "dsh-tool-text-summary.summarize",
+      "predicate": "complements",
+      "score": 0.7521
+    },
+    {
+      "source": "dsh-tool-text-diff.diff",
+      "target": "dsh-tool-unit-convert.convert",
+      "predicate": "complements",
+      "score": 0.7475
+    },
+    {
+      "source": "dsh-tool-text-diff.diff",
+      "target": "dsh-tool-json-format.format",
+      "predicate": "complements",
+      "score": 0.7273
+    },
+    {
+      "source": "dsh-tool-text-summary.summarize",
+      "target": "dsh-tool-text-diff.diff",
+      "predicate": "complements",
+      "score": 0.7521
+    },
+    {
+      "source": "dsh-tool-text-summary.summarize",
+      "target": "dsh-tool-readability.analyze",
+      "predicate": "complements",
+      "score": 0.726
+    },
+    {
+      "source": "dsh-tool-text-summary.summarize",
+      "target": "dsh-tool-markdown-report.report",
+      "predicate": "complements",
+      "score": 0.7126
+    },
+    {
+      "source": "dsh-tool-unit-convert.convert",
+      "target": "dsh-tool-fx-rates.convert",
+      "predicate": "complements",
+      "score": 0.8472
+    },
+    {
+      "source": "dsh-tool-unit-convert.convert",
+      "target": "dsh-tool-invoice-calc.calc",
+      "predicate": "complements",
+      "score": 0.7676
+    },
+    {
+      "source": "dsh-tool-unit-convert.convert",
+      "target": "dsh-tool-codec-kit.codec",
+      "predicate": "complements",
+      "score": 0.7503
+    }
+  ]
+}

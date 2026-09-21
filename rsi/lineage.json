@@ -1,0 +1,47 @@
+[
+  {
+    "generation": 1,
+    "startedAt": "2026-09-21T08:02:58.992Z",
+    "embedder": "ollama:nomic-embed-text",
+    "candidates": 3,
+    "kept": [
+      "dsh-tool-date-math.calc+dsh-tool-loan-calc.calc",
+      "dsh-tool-invoice-calc.calc+dsh-tool-loan-calc.calc"
+    ],
+    "rejected": [
+      "dsh-tool-fx-rates.convert+dsh-tool-unit-convert.convert"
+    ],
+    "evaluations": [
+      {
+        "id": "dsh-tool-date-math.calc+dsh-tool-loan-calc.calc",
+        "compiled": true,
+        "executed": true,
+        "score": 0.95,
+        "validatorFailures": [],
+        "notes": [
+          "output length 300"
+        ]
+      },
+      {
+        "id": "dsh-tool-invoice-calc.calc+dsh-tool-loan-calc.calc",
+        "compiled": true,
+        "executed": true,
+        "score": 0.891,
+        "validatorFailures": [],
+        "notes": [
+          "output length 242"
+        ]
+      },
+      {
+        "id": "dsh-tool-fx-rates.convert+dsh-tool-unit-convert.convert",
+        "compiled": true,
+        "executed": true,
+        "score": 0.828,
+        "validatorFailures": [],
+        "notes": [
+          "output length 265"
+        ]
+      }
+    ]
+  }
+]

@@ -32,6 +32,8 @@ npx dsh llm ask "..."  # 本地 LLM 生成 + L3 验证循环
 npx dsh demo carbon [--llm]  # L5 多Agent Demo（--llm 用本地 Ollama 真实合成）
 npx dsh serve [port]   # REST 网关: POST /invoke，API-Key 计费 + 限流 (:8787)
 npx dsh registry gen   # 市场目录: registry.json + index.html
+npx dsh graph build     # 工具关系图（开放词汇关系预测，RAM 思路）
+npx dsh rsi run --gens 1 --keep 2   # RSI 自我进化：组合新插件并保留优胜
 ```
 
 ## 内置插件（20 个）
@@ -68,6 +70,20 @@ npx dsh list               # 验证
 - **MCP 市场**：`npm pack` 后以 stdio 方式接入 Claude Desktop / Cursor 等 MCP 客户端（入口 `dist/bridge/server.js`，官方 SDK 实现）；可用 `npx @modelcontextprotocol/inspector node dist/bridge/server.js` 调试
 - **Koishi 插件市场**：`npx dsh pack <plugin>` 生成符合市场准入规范的发布包（`koishi-plugin-*` 命名、`peerDependencies.koishi`、`koishi` 元数据字段），`cd publish/<name> && npm publish` 即上架
 - **A2A 注册中心**：`a2a-cards/` 直接兼容 Google A2A v1.0 规范，可用官方 [@a2a-js/sdk](https://github.com/a2aproject/a2a-js) ClientFactory 消费
+
+## 借鉴的开源项目
+
+- **RelateAnything / RAM** (Apache-2.0)：开放词汇关系预测思想 → dsh graph build 用本地 nomic-embed-text 嵌入 21+ 工具，谓词在推理时以字符串提供（similar_to / complements / feeds_into / supersedes / validates）
+- **LayaAir** (MIT)：全平台 3D/2D 引擎，其 IDE 资源商店是插件变现渠道之一 → dsh-tool-laya-scene 生成 LayaAir 风格场景 JSON
+- **MCP / A2A 官方 SDK**：协议层实现
+
+## RSI（递归自我改进）
+
+```bash
+npx dsh rsi run --gens 1 --keep 2
+`
+
+流程：观察工具目录 → 用关系图提出管道候选 → 生成插件源码 → 编译 → 执行采样输入 → L3 验证器打分 → 保留前 K 名（其余删除）→ 写入 si/lineage.json。生成的管道插件自给自足（动态加载成员插件），无需额外桥接。
 
 ## CI
 

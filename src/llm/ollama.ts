@@ -33,8 +33,7 @@ export async function listModels(baseUrl = DEFAULT_BASE): Promise<string[]> {
 export async function ollamaChat(
   prompt: string,
   opts: OllamaOptions = {},
-): Promise<string> {
-  const body = {
+): Promise<string> {  const body = {
     model: opts.model ?? DEFAULT_MODEL,
     stream: false,
     messages: [
@@ -52,4 +51,26 @@ export async function ollamaChat(
   if (!res.ok) throw new Error(`Ollama HTTP ${res.status}`);
   const data = (await res.json()) as { message?: { content?: string } };
   return data.message?.content ?? '';
+}
+
+const DEFAULT_EMBED_MODEL = process.env['DSH_EMBED_MODEL'] ?? 'nomic-embed-text';
+
+/** Text embedding via Ollama /api/embeddings (free, local). */
+export async function ollamaEmbed(
+  text: string,
+  opts: { model?: string; baseUrl?: string } = {},
+): Promise<number[] | null> {
+  try {
+    const res = await fetch(`${opts.baseUrl ?? DEFAULT_BASE}/api/embeddings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: opts.model ?? DEFAULT_EMBED_MODEL, prompt: text }),
+      signal: AbortSignal.timeout(60000),
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { embedding?: number[] };
+    return data.embedding ?? null;
+  } catch {
+    return null;
+  }
 }

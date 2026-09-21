@@ -38,6 +38,8 @@ const SAMPLES: Record<string, string> = {
   'dsh-tool-readability.analyze':
     '这是一段用于可读性分析的中文示例文本，包含多个句子。每个句子长度适中，便于统计平均句长。' +
     '文本还包含一些数字比如 42 和百分比 15%。此外还有英文单词 readability 混排。'.repeat(3),
+  'dsh-tool-laya-scene.scene':
+    '{"name":"DemoScene","width":750,"height":1334,"nodes":[{"type":"Box","name":"bg","x":0,"y":0,"width":750,"height":1334,"color":"#101020"},{"type":"Text","name":"title","x":40,"y":80,"width":600,"height":60,"text":"DSH Scene","color":"#FFFFFF"}]}',
 };
 
 describe('integration: every tool executes end-to-end', () => {

@@ -14,6 +14,8 @@ import {
   readUsage,
 } from './gateway/keys.js';
 import { generateRegistry } from './registry.js';
+import { writeRelationGraph } from './graph/relations.js';
+import { runRsi } from './rsi/engine.js';
 import {
   ollamaAvailable,
   listModels,
@@ -35,6 +37,8 @@ Usage:
   dsh keys list            List API keys and usage aggregates
   dsh keys revoke <name|key>            Revoke an API key
   dsh registry gen         Generate marketplace catalog (registry.json + index.html)
+  dsh graph build [dir]    Open-vocabulary tool relation graph (RAM-inspired)
+  dsh rsi run [--gens N] [--keep K]   Recursive self-improvement: evolve new plugins
   dsh scaffold <name>      Scaffold a new dsh-tool-<name> plugin (loop-dev entry)
   dsh pack <dir-name>      Build publish-ready Koishi marketplace package
   dsh llm models           List local Ollama models (free inference)
@@ -126,6 +130,42 @@ async function main(): Promise<void> {
         console.log(revokeKey(args[1]) ? 'revoked' : 'not found');
       } else {
         console.error(HELP);
+      }
+      break;
+    }
+    case 'graph': {
+      if (args[0] === 'build') {
+        const files = await writeRelationGraph(args[1]);
+        console.log('Relation graph written:');
+        for (const f of files) console.log('  ' + f);
+      } else {
+        console.error(HELP);
+        process.exitCode = 1;
+      }
+      break;
+    }
+    case 'rsi': {
+      if (args[0] === 'run') {
+        const gensIdx = args.indexOf('--gens');
+        const keepIdx = args.indexOf('--keep');
+        const generations = gensIdx >= 0 ? Number(args[gensIdx + 1]) || 1 : 1;
+        const keep = keepIdx >= 0 ? Number(args[keepIdx + 1]) || 2 : 2;
+        console.log(`RSI: ${generations} generation(s), keep top ${keep}`);
+        const history = await runRsi({ generations, keep });
+        for (const h of history) {
+          console.log(
+            `  gen ${h.generation}: candidates=${h.candidates} kept=[${h.kept.join(', ')}] rejected=${h.rejected.length}`,
+          );
+          for (const e of h.evaluations) {
+            console.log(
+              `    ${e.id} score=${e.score} compiled=${e.compiled} executed=${e.executed} failures=${e.validatorFailures.join('/') || '-'}`,
+            );
+          }
+        }
+        console.log('Lineage: rsi/lineage.json');
+      } else {
+        console.error(HELP);
+        process.exitCode = 1;
       }
       break;
     }

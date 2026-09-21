@@ -1,0 +1,6 @@
+name: dsh-tool-laya-scene
+version: 1.0.0
+description: Generate LayaAir-compatible 2D scene JSON (nodes, transforms, materials) from a declarative spec.
+public: true
+tools:
+  - scene
