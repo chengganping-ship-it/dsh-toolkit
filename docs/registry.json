@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-08-23T14:18:37.689Z",
+  "generatedAt": "2026-09-21T08:04:40.252Z",
   "protocol": {
     "mcp": "stdio via official @modelcontextprotocol/sdk",
     "a2a": "v1.0 JSON-RPC via official @a2a-js/sdk",
     "rest": "POST /invoke {tool, input_data}"
   },
   "counts": {
-    "plugins": 20,
-    "tools": 20
+    "plugins": 23,
+    "tools": 23
   },
   "plugins": [
     {
@@ -151,6 +151,20 @@
       ]
     },
     {
+      "plugin": "dsh-tool-laya-scene",
+      "version": "1.0.0",
+      "description": "Generate LayaAir-compatible 2D scene JSON (nodes, transforms, materials) from a declarative spec.",
+      "tools": [
+        {
+          "name": "dsh-tool-laya-scene.scene",
+          "description": "Invoke scene",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
       "plugin": "dsh-tool-loan-calc",
       "version": "1.0.0",
       "description": "Loan amortization calculator with monthly payment and interest breakdown.",
@@ -214,6 +228,34 @@
         {
           "name": "dsh-tool-regex-lab.test",
           "description": "Invoke test",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-rsi-date-math-calc-x-dsh-tool-loan-calc-calc",
+      "version": "0.1.0",
+      "description": "RSI-composed pipeline (feeds_into): dsh-tool-date-math.calc -> dsh-tool-loan-calc.calc",
+      "tools": [
+        {
+          "name": "dsh-tool-rsi-date-math-calc-x-dsh-tool-loan-calc-calc.pipeline",
+          "description": "Invoke pipeline",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-rsi-invoice-calc-calc-x-dsh-tool-loan-calc-calc",
+      "version": "0.1.0",
+      "description": "RSI-composed pipeline (feeds_into): dsh-tool-invoice-calc.calc -> dsh-tool-loan-calc.calc",
+      "tools": [
+        {
+          "name": "dsh-tool-rsi-invoice-calc-calc-x-dsh-tool-loan-calc-calc.pipeline",
+          "description": "Invoke pipeline",
           "contract": {
             "input_data": "string"
           }

@@ -13,9 +13,9 @@ h1 small{color:#666;font-weight:normal}
 </style>
 </head>
 <body>
-<h1>DSH Plugin Registry <small>20 plugins / 20 tools</small></h1>
+<h1>DSH Plugin Registry <small>23 plugins / 23 tools</small></h1>
 <p>Protocols: MCP (stdio) · A2A v1.0 (JSON-RPC) · REST (<code>POST /invoke</code>)<br/>
-Generated at 2026-08-23T14:18:37.689Z</p>
+Generated at 2026-09-21T08:04:40.252Z</p>
 <table>
 <tr><th>Plugin</th><th>Description</th><th>Tools</th></tr>
     <tr><td><b>dsh-tool-carbon-baseline</b><br/><small>v1.0.0</small></td>
@@ -48,6 +48,9 @@ Generated at 2026-08-23T14:18:37.689Z</p>
     <tr><td><b>dsh-tool-json-format</b><br/><small>v1.0.0</small></td>
     <td>Validate and pretty-print JSON payloads with deterministic formatting.</td>
     <td><code>dsh-tool-json-format.format</code></td></tr>
+    <tr><td><b>dsh-tool-laya-scene</b><br/><small>v1.0.0</small></td>
+    <td>Generate LayaAir-compatible 2D scene JSON (nodes, transforms, materials) from a declarative spec.</td>
+    <td><code>dsh-tool-laya-scene.scene</code></td></tr>
     <tr><td><b>dsh-tool-loan-calc</b><br/><small>v1.0.0</small></td>
     <td>Loan amortization calculator with monthly payment and interest breakdown.</td>
     <td><code>dsh-tool-loan-calc.calc</code></td></tr>
@@ -63,6 +66,12 @@ Generated at 2026-08-23T14:18:37.689Z</p>
     <tr><td><b>dsh-tool-regex-lab</b><br/><small>v1.0.0</small></td>
     <td>Test regular expressions with match listing, capture groups and positions.</td>
     <td><code>dsh-tool-regex-lab.test</code></td></tr>
+    <tr><td><b>dsh-tool-rsi-date-math-calc-x-dsh-tool-loan-calc-calc</b><br/><small>v0.1.0</small></td>
+    <td>RSI-composed pipeline (feeds_into): dsh-tool-date-math.calc -> dsh-tool-loan-calc.calc</td>
+    <td><code>dsh-tool-rsi-date-math-calc-x-dsh-tool-loan-calc-calc.pipeline</code></td></tr>
+    <tr><td><b>dsh-tool-rsi-invoice-calc-calc-x-dsh-tool-loan-calc-calc</b><br/><small>v0.1.0</small></td>
+    <td>RSI-composed pipeline (feeds_into): dsh-tool-invoice-calc.calc -> dsh-tool-loan-calc.calc</td>
+    <td><code>dsh-tool-rsi-invoice-calc-calc-x-dsh-tool-loan-calc-calc.pipeline</code></td></tr>
     <tr><td><b>dsh-tool-salary-tax</b><br/><small>v1.0.0</small></td>
     <td>China salary breakdown - social insurance, housing fund and IIT withholding.</td>
     <td><code>dsh-tool-salary-tax.calc</code></td></tr>
