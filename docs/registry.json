@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-22T14:04:40.429Z",
+  "generatedAt": "2026-09-22T14:19:28.138Z",
   "protocol": {
     "mcp": "stdio via official @modelcontextprotocol/sdk",
     "a2a": "v1.0 JSON-RPC via official @a2a-js/sdk",
     "rest": "POST /invoke {tool, input_data}"
   },
   "counts": {
-    "plugins": 28,
-    "tools": 28
+    "plugins": 30,
+    "tools": 30
   },
   "plugins": [
     {
@@ -81,6 +81,34 @@
       ]
     },
     {
+      "plugin": "dsh-tool-ext-color",
+      "version": "5.0.3",
+      "description": "Adapter for external package color (mit) - Color conversion and manipulation with CSS string support",
+      "tools": [
+        {
+          "name": "dsh-tool-ext-color.probe",
+          "description": "Invoke probe",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-ext-color-convert",
+      "version": "3.1.3",
+      "description": "Adapter for external package color-convert (mit) - Plain color conversion functions",
+      "tools": [
+        {
+          "name": "dsh-tool-ext-color-convert.probe",
+          "description": "Invoke probe",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
       "plugin": "dsh-tool-ext-csv-parser",
       "version": "3.2.1",
       "description": "Adapter for external package csv-parser (mit) - Streaming CSV parser that aims for maximum speed as well as compatibility with the csv-spectrum test suite",
@@ -144,6 +172,20 @@
         {
           "name": "dsh-tool-ext-validator.check",
           "description": "Invoke check",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-ext-yaml-eslint-parser",
+      "version": "2.1.0",
+      "description": "Adapter for external package yaml-eslint-parser (mit) - A YAML parser that produces output compatible with ESLint",
+      "tools": [
+        {
+          "name": "dsh-tool-ext-yaml-eslint-parser.probe",
+          "description": "Invoke probe",
           "contract": {
             "input_data": "string"
           }
@@ -305,26 +347,12 @@
       ]
     },
     {
-      "plugin": "dsh-tool-rsi-date-math-calc-x-dsh-tool-loan-calc-calc",
+      "plugin": "dsh-tool-rsi-abd12b0f",
       "version": "0.1.0",
-      "description": "RSI-composed pipeline (feeds_into): dsh-tool-date-math.calc -> dsh-tool-loan-calc.calc",
+      "description": "RSI pipeline [abd12b0f]: dsh-tool-date-math.calc -> dsh-tool-loan-calc.calc (feeds_into)",
       "tools": [
         {
-          "name": "dsh-tool-rsi-date-math-calc-x-dsh-tool-loan-calc-calc.pipeline",
-          "description": "Invoke pipeline",
-          "contract": {
-            "input_data": "string"
-          }
-        }
-      ]
-    },
-    {
-      "plugin": "dsh-tool-rsi-invoice-calc-calc-x-dsh-tool-loan-calc-calc",
-      "version": "0.1.0",
-      "description": "RSI-composed pipeline (feeds_into): dsh-tool-invoice-calc.calc -> dsh-tool-loan-calc.calc",
-      "tools": [
-        {
-          "name": "dsh-tool-rsi-invoice-calc-calc-x-dsh-tool-loan-calc-calc.pipeline",
+          "name": "dsh-tool-rsi-abd12b0f.pipeline",
           "description": "Invoke pipeline",
           "contract": {
             "input_data": "string"

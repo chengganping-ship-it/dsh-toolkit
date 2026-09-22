@@ -13,9 +13,9 @@ h1 small{color:#666;font-weight:normal}
 </style>
 </head>
 <body>
-<h1>DSH Plugin Registry <small>28 plugins / 28 tools</small></h1>
+<h1>DSH Plugin Registry <small>30 plugins / 30 tools</small></h1>
 <p>Protocols: MCP (stdio) · A2A v1.0 (JSON-RPC) · REST (<code>POST /invoke</code>)<br/>
-Generated at 2026-09-22T14:04:40.429Z</p>
+Generated at 2026-09-22T14:19:28.138Z</p>
 <table>
 <tr><th>Plugin</th><th>Description</th><th>Tools</th></tr>
     <tr><td><b>dsh-tool-carbon-baseline</b><br/><small>v1.0.0</small></td>
@@ -33,6 +33,12 @@ Generated at 2026-09-22T14:04:40.429Z</p>
     <tr><td><b>dsh-tool-date-math</b><br/><small>v1.0.0</small></td>
     <td>Date arithmetic - day diffs, workday counts, date offsets, all deterministic.</td>
     <td><code>dsh-tool-date-math.calc</code></td></tr>
+    <tr><td><b>dsh-tool-ext-color</b><br/><small>v5.0.3</small></td>
+    <td>Adapter for external package color (mit) - Color conversion and manipulation with CSS string support</td>
+    <td><code>dsh-tool-ext-color.probe</code></td></tr>
+    <tr><td><b>dsh-tool-ext-color-convert</b><br/><small>v3.1.3</small></td>
+    <td>Adapter for external package color-convert (mit) - Plain color conversion functions</td>
+    <td><code>dsh-tool-ext-color-convert.probe</code></td></tr>
     <tr><td><b>dsh-tool-ext-csv-parser</b><br/><small>v3.2.1</small></td>
     <td>Adapter for external package csv-parser (mit) - Streaming CSV parser that aims for maximum speed as well as compatibility with the csv-spectrum test suite</td>
     <td><code>dsh-tool-ext-csv-parser.probe</code></td></tr>
@@ -48,6 +54,9 @@ Generated at 2026-09-22T14:04:40.429Z</p>
     <tr><td><b>dsh-tool-ext-validator</b><br/><small>v13.15.35</small></td>
     <td>Adapter for external package validator (mit) - String validation and sanitization</td>
     <td><code>dsh-tool-ext-validator.check</code></td></tr>
+    <tr><td><b>dsh-tool-ext-yaml-eslint-parser</b><br/><small>v2.1.0</small></td>
+    <td>Adapter for external package yaml-eslint-parser (mit) - A YAML parser that produces output compatible with ESLint</td>
+    <td><code>dsh-tool-ext-yaml-eslint-parser.probe</code></td></tr>
     <tr><td><b>dsh-tool-fx-rates</b><br/><small>v1.0.0</small></td>
     <td>Currency conversion over a deterministic snapshot rate table (USD/CNY/EUR/JPY/GBP/HKD).</td>
     <td><code>dsh-tool-fx-rates.convert</code></td></tr>
@@ -81,12 +90,9 @@ Generated at 2026-09-22T14:04:40.429Z</p>
     <tr><td><b>dsh-tool-regex-lab</b><br/><small>v1.0.0</small></td>
     <td>Test regular expressions with match listing, capture groups and positions.</td>
     <td><code>dsh-tool-regex-lab.test</code></td></tr>
-    <tr><td><b>dsh-tool-rsi-date-math-calc-x-dsh-tool-loan-calc-calc</b><br/><small>v0.1.0</small></td>
-    <td>RSI-composed pipeline (feeds_into): dsh-tool-date-math.calc -> dsh-tool-loan-calc.calc</td>
-    <td><code>dsh-tool-rsi-date-math-calc-x-dsh-tool-loan-calc-calc.pipeline</code></td></tr>
-    <tr><td><b>dsh-tool-rsi-invoice-calc-calc-x-dsh-tool-loan-calc-calc</b><br/><small>v0.1.0</small></td>
-    <td>RSI-composed pipeline (feeds_into): dsh-tool-invoice-calc.calc -> dsh-tool-loan-calc.calc</td>
-    <td><code>dsh-tool-rsi-invoice-calc-calc-x-dsh-tool-loan-calc-calc.pipeline</code></td></tr>
+    <tr><td><b>dsh-tool-rsi-abd12b0f</b><br/><small>v0.1.0</small></td>
+    <td>RSI pipeline [abd12b0f]: dsh-tool-date-math.calc -> dsh-tool-loan-calc.calc (feeds_into)</td>
+    <td><code>dsh-tool-rsi-abd12b0f.pipeline</code></td></tr>
     <tr><td><b>dsh-tool-salary-tax</b><br/><small>v1.0.0</small></td>
     <td>China salary breakdown - social insurance, housing fund and IIT withholding.</td>
     <td><code>dsh-tool-salary-tax.calc</code></td></tr>
