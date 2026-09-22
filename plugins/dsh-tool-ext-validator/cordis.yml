@@ -1,0 +1,6 @@
+name: dsh-tool-ext-validator
+version: 13.15.35
+description: Adapter for external package validator (mit) - String validation and sanitization
+public: true
+tools:
+  - check

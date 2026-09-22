@@ -33,7 +33,9 @@ npx dsh demo carbon [--llm]  # L5 多Agent Demo（--llm 用本地 Ollama 真实�
 npx dsh serve [port]   # REST 网关: POST /invoke，API-Key 计费 + 限流 (:8787)
 npx dsh registry gen   # 市场目录: registry.json + index.html
 npx dsh graph build     # 工具关系图（开放词汇关系预测，RAM 思路）
-npx dsh rsi run --gens 1 --keep 2   # RSI 自我进化：组合新插件并保留优胜
+npx dsh rsi run --gens 1 --keep 2   # RSI 内部进化：组合新插件并保留优胜
+npx dsh rsi harvest --queries "markdown to html,csv parser" --keep 4   # RSI 外部收割：搜索并集成第三方库
+npx dsh rsi status      # 查看状态机（phase/gate/retry/checkpoint）
 ```
 
 ## 内置插件（20 个）
@@ -77,7 +79,11 @@ npx dsh list               # 验证
 - **LayaAir** (MIT)：全平台 3D/2D 引擎，其 IDE 资源商店是插件变现渠道之一 → dsh-tool-laya-scene 生成 LayaAir 风格场景 JSON
 - **MCP / A2A 官方 SDK**：协议层实现
 
-## RSI（递归自我改进）
+## RSI（递归自我改进 + 外部资源收割）
+
+外部收割（`dsh rsi harvest`）：搜索 npm 生态 → 许可证/新鲜度/相关性门禁 → 安装 → 自动生成适配器插件（专用配方或通用探针）→ 编译 → 网关实测 → 只保留通过者，并在 `rsi/harvest-lineage.json` 记录来源与许可证。
+
+状态机借鉴 JEO：`plan → execute → verify → cleanup → done`，计划哈希门禁（已批准的同哈希计划不重复评审、feedback 必须改计划）、checkpoint 续跑、retry_count 达到 3 提示人工介入。
 
 ```bash
 npx dsh rsi run --gens 1 --keep 2

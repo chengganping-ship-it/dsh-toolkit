@@ -14,8 +14,10 @@ import {
   readUsage,
 } from './gateway/keys.js';
 import { generateRegistry } from './registry.js';
-import { writeRelationGraph } from './graph/relations.js';
+import { writeRelationGraph, explainTool } from './graph/relations.js';
 import { runRsi } from './rsi/engine.js';
+import { runHarvest } from './rsi/harvest.js';
+import { loadState, statePath } from './orchestration/state.js';
 import {
   ollamaAvailable,
   listModels,
@@ -38,7 +40,10 @@ Usage:
   dsh keys revoke <name|key>            Revoke an API key
   dsh registry gen         Generate marketplace catalog (registry.json + index.html)
   dsh graph build [dir]    Open-vocabulary tool relation graph (RAM-inspired)
-  dsh rsi run [--gens N] [--keep K]   Recursive self-improvement: evolve new plugins
+  dsh graph explain <tool> Show one tool's inferred relations
+  dsh rsi run [--gens N] [--keep K] [--manual]   Gated self-improvement pipeline (internal)
+  dsh rsi harvest [--queries a,b] [--keep K]   Harvest external resources into new plugins
+  dsh rsi status           Show the RSI state machine (phase/gate/retry/checkpoint)
   dsh scaffold <name>      Scaffold a new dsh-tool-<name> plugin (loop-dev entry)
   dsh pack <dir-name>      Build publish-ready Koishi marketplace package
   dsh llm models           List local Ollama models (free inference)
@@ -138,6 +143,13 @@ async function main(): Promise<void> {
         const files = await writeRelationGraph(args[1]);
         console.log('Relation graph written:');
         for (const f of files) console.log('  ' + f);
+      } else if (args[0] === 'explain') {
+        if (!args[1]) {
+          console.error('Usage: dsh graph explain <plugin.tool>');
+          process.exitCode = 1;
+          break;
+        }
+        console.log(await explainTool(args[1]));
       } else {
         console.error(HELP);
         process.exitCode = 1;
@@ -150,19 +162,60 @@ async function main(): Promise<void> {
         const keepIdx = args.indexOf('--keep');
         const generations = gensIdx >= 0 ? Number(args[gensIdx + 1]) || 1 : 1;
         const keep = keepIdx >= 0 ? Number(args[keepIdx + 1]) || 2 : 2;
-        console.log(`RSI: ${generations} generation(s), keep top ${keep}`);
-        const history = await runRsi({ generations, keep });
-        for (const h of history) {
+        const gate = args.includes('--manual') ? 'manual' : 'auto';
+        console.log(`RSI: ${generations} generation(s), keep top ${keep}, gate=${gate}`);
+        const result = await runRsi({ generations, keep, gate });
+        for (const h of result.lineage) {
           console.log(
-            `  gen ${h.generation}: candidates=${h.candidates} kept=[${h.kept.join(', ')}] rejected=${h.rejected.length}`,
+            `  gen ${h.generation}: candidates=${h.candidates} gate=${h.gate} kept=[${h.kept.join(', ')}] rejected=${h.rejected.length}`,
           );
           for (const e of h.evaluations) {
             console.log(
               `    ${e.id} score=${e.score} compiled=${e.compiled} executed=${e.executed} failures=${e.validatorFailures.join('/') || '-'}`,
             );
           }
+          for (const v of h.verify) {
+            console.log(
+              `    verify ${v.plugin}: http=${v.httpStatus} output=${v.outputLength} ok=${v.ok}`,
+            );
+          }
         }
-        console.log('Lineage: rsi/lineage.json');
+        console.log(`Lineage: rsi/lineage.json | state: ${statePath()}`);
+      } else if (args[0] === 'harvest') {
+        const qIdx = args.indexOf('--queries');
+        const keepIdx = args.indexOf('--keep');
+        const queries =
+          qIdx >= 0 && args[qIdx + 1]
+            ? String(args[qIdx + 1])
+                .split(',')
+                .map((s) => s.trim())
+                .filter(Boolean)
+            : undefined;
+        const keep = keepIdx >= 0 ? Number(args[keepIdx + 1]) || 2 : 2;
+        const gate = args.includes('--manual') ? 'manual' : 'auto';
+        console.log(
+          `RSI harvest: queries=${queries?.join(' | ') ?? '(defaults)'} keep=${keep} gate=${gate}`,
+        );
+        const result = await runHarvest({ queries, keep, gate });
+        for (const h of result.lineage) {
+          console.log(`  gate=${h.gate} selected=${h.selected.join(', ') || '(none)'}`);
+          for (const i of h.integrations) {
+            console.log(
+              `    ${i.pluginName}: installed=${i.installed} compiled=${i.compiled} executed=${i.executed} score=${i.score} http=${i.verify.httpStatus} ok=${i.verify.ok} (${i.license})`,
+            );
+          }
+          if (h.rejected.length) {
+            console.log(`    rejected ${h.rejected.length}: ${h.rejected.slice(0, 5).map((r) => r.name).join(', ')}...`);
+          }
+        }
+        console.log('Lineage: rsi/harvest-lineage.json');
+      } else if (args[0] === 'status') {
+        const s = loadState();
+        if (!s) {
+          console.log('(no rsi state yet - run: dsh rsi run)');
+        } else {
+          console.log(JSON.stringify(s, null, 2));
+        }
       } else {
         console.error(HELP);
         process.exitCode = 1;

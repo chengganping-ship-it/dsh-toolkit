@@ -5,15 +5,30 @@ import { discoverPlugins, flattenTools } from '../bridge/loader.js';
 import { defaultValidators } from '../loop/validators.js';
 import { selfCritique } from '../loop/critic.js';
 import { buildRelationGraph, type RelationEdge } from '../graph/relations.js';
+import {
+  loadState,
+  newState,
+  saveState,
+  enterPhase,
+  recordError,
+  needsHumanEscalation,
+  evaluatePlanGate,
+  approvePlan,
+  resumePhase,
+  type PipelineState,
+} from '../orchestration/state.js';
 
 /**
- * RSI (recursive self-improvement) engine.
+ * RSI (recursive self-improvement) engine with JEO-inspired orchestration.
  *
- * Loop:  observe catalog -> propose candidates from relation graph
- *        -> materialize plugin source -> compile -> execute sample inputs
- *        -> score with L3 validators + critique -> keep fittest -> record lineage
+ *   PLAN    -> propose candidates from the relation graph, gate the plan
+ *   EXECUTE -> materialize + compile + run + score, keep the fittest
+ *   VERIFY  -> end-to-end HTTP verification through the REST gateway
+ *   CLEANUP -> delete rejected candidates, persist lineage, mark done
  *
- * Everything is deterministic given the same catalog, so runs are reproducible.
+ * The plan gate obeys JEO rules: never execute without an approved plan;
+ * an unchanged plan hash with a terminal approval is not re-reviewed;
+ * feedback_required forces a revision (new hash).
  */
 
 export interface Candidate {
@@ -37,10 +52,21 @@ export interface Lineage {
   generation: number;
   startedAt: string;
   embedder: string;
+  planHash: string;
+  gate: string;
   candidates: number;
   kept: string[];
   rejected: string[];
   evaluations: Evaluation[];
+  verify: VerifyEvidence[];
+}
+
+export interface VerifyEvidence {
+  plugin: string;
+  httpStatus: number;
+  accepted: boolean;
+  outputLength: number;
+  ok: boolean;
 }
 
 const SAMPLE_BY_TOOL: Record<string, string> = {
@@ -83,9 +109,36 @@ export function proposeCandidates(
       description: `RSI-composed pipeline (${e.predicate}): ${e.source} -> ${e.target}`,
       members: [e.source, e.target],
       source: renderPipelineSource(name, e.predicate, e.source, e.target),
-    });    if (out.length >= limit) break;
+    });
+    if (out.length >= limit) break;
   }
   return out;
+}
+
+/** Human-readable plan document (the artifact reviewed by the plan gate). */
+export function renderPlan(
+  candidates: Candidate[],
+  embedder: string,
+  keep: number,
+): string {
+  return [
+    '# RSI Plan',
+    '',
+    `- Embedder: ${embedder}`,
+    `- Candidates: ${candidates.length} (keep top ${keep})`,
+    '- Completion criteria: every kept plugin compiles, executes, passes all L3 validators, and answers HTTP 200 through the REST gateway',
+    '',
+    '## Candidates',
+    ...candidates.map(
+      (c, i) =>
+        `${i + 1}. ${c.name}\n   - members: ${c.members.join(' + ')}\n   - ${c.description}`,
+    ),
+    '',
+    '## Risks',
+    '- composed pipelines may not be semantically meaningful (relation heuristic)',
+    '- rejected candidates are deleted, so selection is destructive by design',
+    '',
+  ].join('\n');
 }
 
 function renderPipelineSource(
@@ -166,25 +219,75 @@ export interface RsiOptions {
   keep?: number;
   workDir?: string;
   limitCandidates?: number;
+  /** 'auto' (default, deterministic) or 'manual' (requires DSH_RSI_APPROVAL=1) */
+  gate?: 'auto' | 'manual';
 }
 
-export async function runRsi(opts: RsiOptions = {}): Promise<Lineage[]> {
+export interface RsiResult {
+  lineage: Lineage[];
+  state: PipelineState;
+}
+
+export async function runRsi(opts: RsiOptions = {}): Promise<RsiResult> {
   const generations = opts.generations ?? 1;
   const keep = opts.keep ?? 2;
   const workDir = opts.workDir ?? process.cwd();
   const limitCandidates = opts.limitCandidates ?? 3;
+  const gateMode = opts.gate ?? 'auto';
+
   const history: Lineage[] = [];
+  let state = loadState(workDir) ?? newState('rsi: evolve plugin candidates from relation graph');
+  const resumeFrom = resumePhase(state);
+  if (resumeFrom !== 'plan' && resumeFrom !== 'done') {
+    console.error(`[rsi] resuming from checkpoint: ${resumeFrom}`);
+  }
+  saveState(state, workDir);
 
   for (let gen = 1; gen <= generations; gen++) {
     const startedAt = new Date().toISOString();
+
+    // ---------------- PLAN ----------------
+    enterPhase(state, 'plan');
     const graph = await buildRelationGraph();
     const { plugins } = await discoverPlugins();
     const available = flattenTools(plugins).map((t) => t.fqName);
-
     const candidates = proposeCandidates(graph.edges, available, limitCandidates);
-    const evaluations: Evaluation[] = [];
+    const planText = renderPlan(candidates, graph.embedder, keep);
+    fs.mkdirSync(path.join(workDir, '.dsh', 'plans'), { recursive: true });
+    fs.writeFileSync(path.join(workDir, '.dsh', 'plans', `rsi-gen${gen}.md`), planText);
 
-    // Materialize candidates as plugin dirs, then compile once.
+    const decision = evaluatePlanGate(state, planText);
+    if (decision.action === 'skip') {
+      console.error(`[rsi] plan gate: SKIP (${decision.reason})`);
+    } else if (decision.action === 'revise') {
+      recordError(state, decision.reason);
+      saveState(state, workDir);
+      throw new Error(`[rsi] plan gate blocked: ${decision.reason}`);
+    } else {
+      const approved =
+        gateMode === 'auto' || process.env['DSH_RSI_APPROVAL'] === '1';
+      if (!approved) {
+        state.plan_gate_status = 'infrastructure_blocked';
+        saveState(state, workDir);
+        console.error('[rsi] plan gate: awaiting manual approval');
+        console.error(`       plan written to .dsh/plans/rsi-gen${gen}.md`);
+        console.error('       re-run with DSH_RSI_APPROVAL=1 to approve');
+        return { lineage: history, state };
+      }
+      approvePlan(state, gateMode === 'auto' ? 'auto' : 'manual');
+      console.error(`[rsi] plan gate: APPROVED (${state.plan_gate_status})`);
+    }
+    if (!state.plan_approved) {
+      recordError(state, 'refusing to execute without an approved plan');
+      saveState(state, workDir);
+      throw new Error('[rsi] refusing to enter EXECUTE without plan approval');
+    }
+    saveState(state, workDir);
+
+    // ---------------- EXECUTE ----------------
+    enterPhase(state, 'execute');
+    saveState(state, workDir);
+    const evaluations: Evaluation[] = [];
     const staged: Candidate[] = [];
     for (const c of candidates) {
       const dir = path.join(workDir, 'plugins', c.name, 'src');
@@ -209,8 +312,9 @@ export async function runRsi(opts: RsiOptions = {}): Promise<Lineage[]> {
     try {
       execSync('npx tsc -p tsconfig.plugins.json', { cwd: workDir, stdio: 'pipe' });
       compiled = true;
-    } catch {
+    } catch (e) {
       compiled = false;
+      recordError(state, `plugin compilation failed: ${String(e).slice(0, 200)}`);
     }
 
     for (const c of staged) {
@@ -223,7 +327,7 @@ export async function runRsi(opts: RsiOptions = {}): Promise<Lineage[]> {
         notes: [],
       };
       if (compiled) {
-        const out = await tryExecute(workDir, c, available);
+        const out = await tryExecute(c);
         if (out !== null) {
           ev.executed = true;
           const failed = defaultValidators().map((v) => v(out)).filter((r) => !r.passed);
@@ -241,7 +345,22 @@ export async function runRsi(opts: RsiOptions = {}): Promise<Lineage[]> {
     const kept = evaluations.slice(0, keep).map((e) => e.id);
     const rejected = evaluations.slice(keep).map((e) => e.id);
 
-    // Remove rejected plugin dirs (evolution: only survivors persist)
+    // ---------------- VERIFY (end-to-end through the REST gateway) ----------------
+    enterPhase(state, 'verify');
+    saveState(state, workDir);
+    const verify: VerifyEvidence[] = [];
+    if (compiled) {
+      verify.push(...(await verifyThroughGateway(kept, staged)));
+    }
+    state.evidence[`gen${gen}`] = { kept, verify };
+    const verifyOk = verify.length > 0 && verify.every((v) => v.ok);
+    if (!verifyOk) {
+      recordError(state, 'gateway verification did not pass for all kept plugins');
+    }
+    saveState(state, workDir);
+
+    // ---------------- CLEANUP ----------------
+    enterPhase(state, 'cleanup');
     for (const c of staged) {
       if (!kept.includes(c.id)) {
         fs.rmSync(path.join(workDir, 'plugins', c.name), { recursive: true, force: true });
@@ -252,10 +371,13 @@ export async function runRsi(opts: RsiOptions = {}): Promise<Lineage[]> {
       generation: gen,
       startedAt,
       embedder: graph.embedder,
+      planHash: state.plan_current_hash ?? '',
+      gate: state.plan_gate_status,
       candidates: candidates.length,
       kept,
       rejected,
       evaluations,
+      verify,
     };
     history.push(lineage);
 
@@ -265,16 +387,64 @@ export async function runRsi(opts: RsiOptions = {}): Promise<Lineage[]> {
       path.join(dir, 'lineage.json'),
       JSON.stringify(history, null, 2) + '\n',
     );
+
+    if (needsHumanEscalation(state)) {
+      console.error(
+        `[rsi] retry_count=${state.retry_count} (>=3) - human confirmation recommended`,
+      );
+    }
   }
 
-  return history;
+  enterPhase(state, 'done');
+  saveState(state, workDir);
+  return { lineage: history, state };
 }
 
-async function tryExecute(
-  workDir: string,
-  c: Candidate,
-  available: string[],
-): Promise<string | null> {
+async function verifyThroughGateway(
+  kept: string[],
+  staged: Candidate[],
+): Promise<VerifyEvidence[]> {
+  const out: VerifyEvidence[] = [];
+  try {
+    const { createGatewayApp } = await import('../gateway/server.js');
+    const app = await createGatewayApp();
+    const server = app.listen(0);
+    const addr = server.address();
+    const port = typeof addr === 'object' && addr ? addr.port : 0;
+
+    for (const id of kept) {
+      const c = staged.find((s) => s.id === id);
+      if (!c) continue;
+      const sample = SAMPLE_BY_TOOL[c.members[0]!] ?? c.members[0]!;
+      const res = await fetch(`http://127.0.0.1:${port}/invoke`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-API-Key': 'rsi-verify' },
+        body: JSON.stringify({ tool: `${c.name}.pipeline`, input_data: sample }),
+      });
+      const body = (await res.json()) as { output?: string; accepted?: boolean };
+      out.push({
+        plugin: c.name,
+        httpStatus: res.status,
+        accepted: body.accepted === true,
+        outputLength: (body.output ?? '').length,
+        ok: res.status === 200 && (body.output ?? '').length > 0,
+      });
+    }
+    server.close();
+  } catch (e) {
+    out.push({
+      plugin: '(gateway)',
+      httpStatus: 0,
+      accepted: false,
+      outputLength: 0,
+      ok: false,
+    });
+    void e;
+  }
+  return out;
+}
+
+async function tryExecute(c: Candidate): Promise<string | null> {
   try {
     const { discoverPlugins: rediscover, flattenTools: flat } = await import(
       '../bridge/loader.js'
@@ -283,21 +453,8 @@ async function tryExecute(
     const tools = flat(plugins);
     const self = tools.find((t) => t.plugin === c.name);
     if (!self?.handler) return null;
-
-    // bridge stage A/B to real handlers so the pipeline actually runs
-    const bridge = async (fq: string, input: string): Promise<string> => {
-      const t = tools.find((x) => x.fqName === fq);
-      if (!t?.handler) return `[missing ${fq}]`;
-      return t.handler(input);
-    };
-    (globalThis as any).__dshPipelineBridge = bridge;
-
     const sample = SAMPLE_BY_TOOL[c.members[0]!] ?? c.members[0]!;
-    const out = await self.handler(sample);
-    delete (globalThis as any).__dshPipelineBridge;
-    void workDir;
-    void available;
-    return out;
+    return await self.handler(sample);
   } catch {
     return null;
   }

@@ -1,0 +1,175 @@
+[
+  {
+    "generation": 1,
+    "startedAt": "2026-09-22T14:03:04.876Z",
+    "queries": [
+      "markdown to html",
+      "unique id generator",
+      "csv parser"
+    ],
+    "planHash": "12dbe222f6a306090393477f9b2d8c4483b3b195067593395a9bbd06b6c638c6",
+    "gate": "approved",
+    "selected": [
+      "fast-csv",
+      "papaparse",
+      "csv-parser",
+      "shortid"
+    ],
+    "integrations": [
+      {
+        "package": "fast-csv",
+        "version": "5.0.7",
+        "license": "mit",
+        "pluginName": "dsh-tool-ext-fast-csv",
+        "tool": "probe",
+        "mode": "probe",
+        "installed": true,
+        "compiled": true,
+        "executed": true,
+        "score": 0.81,
+        "validatorFailures": [],
+        "verify": {
+          "httpStatus": 200,
+          "outputLength": 545,
+          "ok": true
+        },
+        "sourceUrl": "git+https://github.com/C2FO/fast-csv.git"
+      },
+      {
+        "package": "papaparse",
+        "version": "5.7.0",
+        "license": "mit",
+        "pluginName": "dsh-tool-ext-papaparse",
+        "tool": "to_json",
+        "mode": "recipe",
+        "installed": true,
+        "compiled": true,
+        "executed": true,
+        "score": 0.587,
+        "validatorFailures": [],
+        "verify": {
+          "httpStatus": 200,
+          "outputLength": 150,
+          "ok": true
+        },
+        "sourceUrl": "git+https://github.com/mholt/PapaParse.git"
+      },
+      {
+        "package": "csv-parser",
+        "version": "3.2.1",
+        "license": "mit",
+        "pluginName": "dsh-tool-ext-csv-parser",
+        "tool": "probe",
+        "mode": "probe",
+        "installed": true,
+        "compiled": true,
+        "executed": true,
+        "score": 0.97,
+        "validatorFailures": [],
+        "verify": {
+          "httpStatus": 200,
+          "outputLength": 1143,
+          "ok": true
+        },
+        "sourceUrl": "git+https://github.com/mafintosh/csv-parser.git"
+      },
+      {
+        "package": "shortid",
+        "version": "2.2.17",
+        "license": "mit",
+        "pluginName": "dsh-tool-ext-shortid",
+        "tool": "probe",
+        "mode": "probe",
+        "installed": true,
+        "compiled": true,
+        "executed": true,
+        "score": 0.656,
+        "validatorFailures": [],
+        "verify": {
+          "httpStatus": 200,
+          "outputLength": 238,
+          "ok": true
+        },
+        "sourceUrl": "git+https://github.com/dylang/shortid.git"
+      }
+    ],
+    "rejected": [
+      {
+        "name": "yeast",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "showdown",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "uniqid",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "remark-html",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "neat-csv",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "csv-streamify",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "devextreme-showdown",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "nest-csv-parser",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "nano-markdown",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "incremental-csv-parser",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "snowflake-id",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "xid-js",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "@nuxtjs/markdownit-loader",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "gulp-markdown",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "markdown-styles",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "short-uid",
+        "reason": "license not permissive (unknown)"
+      },
+      {
+        "name": "shortid32",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "markdown-to-html-converter",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "uniquid",
+        "reason": "not updated in 2 years"
+      }
+    ]
+  }
+]

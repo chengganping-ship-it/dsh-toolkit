@@ -1,0 +1,6 @@
+name: dsh-tool-ext-papaparse
+version: 5.7.0
+description: Adapter for external package papaparse (mit) - Fast and powerful CSV parser for the browser that supports web workers and streaming large files. Converts CSV to JSON and JSON to CSV.
+public: true
+tools:
+  - to_json

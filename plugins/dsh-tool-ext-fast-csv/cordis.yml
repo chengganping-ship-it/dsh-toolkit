@@ -1,0 +1,6 @@
+name: dsh-tool-ext-fast-csv
+version: 5.0.7
+description: Adapter for external package fast-csv (mit) - CSV parser and writer
+public: true
+tools:
+  - probe

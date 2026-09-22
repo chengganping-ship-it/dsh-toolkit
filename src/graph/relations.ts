@@ -173,3 +173,35 @@ export async function writeRelationGraph(outDir?: string): Promise<string[]> {
   fs.writeFileSync(mdFile, lines.join('\n') + '\n');
   return [jsonFile, mdFile];
 }
+
+/** RAM-style query: explain one tool's relations from the persisted graph. */
+export async function explainTool(toolId: string, graphDir?: string): Promise<string> {
+  const target = graphDir ?? path.resolve(process.cwd(), 'graph');
+  const file = path.join(target, 'tool-relations.json');
+  let g: RelationGraph;
+  if (fs.existsSync(file)) {
+    g = JSON.parse(fs.readFileSync(file, 'utf8')) as RelationGraph;
+  } else {
+    g = await buildRelationGraph();
+  }
+  const out = g.edges.filter((e) => e.source === toolId || e.target === toolId);
+  const lines = [
+    `# 关系解释: ${toolId}`,
+    '',
+    `- 嵌入器：${g.embedder}`,
+    `- 关联边：${out.length}`,
+    '',
+  ];
+  if (out.length === 0) {
+    lines.push('该工具在当前阈值下没有检出关系（可降低阈值或重建关系图）。');
+  } else {
+    lines.push('| 方向 | 谓词 | 对端工具 | 相似度 |', '|---|---|---|---|');
+    for (const e of out.sort((a, b) => b.score - a.score)) {
+      const dir = e.source === toolId ? 'out' : 'in';
+      const other = e.source === toolId ? e.target : e.source;
+      lines.push(`| ${dir} | ${e.predicate} | ${other} | ${e.score} |`);
+    }
+  }
+  lines.push('', '> 免责声明：关系由嵌入相似度 + 启发式谓词推断，仅供参考。');
+  return lines.join('\n');
+}

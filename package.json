@@ -45,7 +45,12 @@
   "dependencies": {
     "@a2a-js/sdk": "^1.0.1",
     "@modelcontextprotocol/sdk": "^1.30.0",
+    "csv-parser": "^3.2.1",
     "express": "^5.2.1",
+    "fast-csv": "^5.0.7",
+    "papaparse": "^5.7.0",
+    "shortid": "^2.2.17",
+    "validator": "^13.15.35",
     "zod": "^4.4.3"
   }
 }

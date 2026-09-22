@@ -1,0 +1,98 @@
+{
+  "pipeline": "rsi-harvest",
+  "task": "rsi-harvest: integrate external resources",
+  "phase": "done",
+  "checkpoint": "done",
+  "plan_approved": true,
+  "plan_gate_status": "approved",
+  "plan_current_hash": "4f6df9dff2718773ae34dd47f2b3d5bf136f2a15729ce67296e0c86407f04020",
+  "last_reviewed_plan_hash": "4f6df9dff2718773ae34dd47f2b3d5bf136f2a15729ce67296e0c86407f04020",
+  "last_reviewed_plan_at": "2026-09-22T14:02:46.062Z",
+  "plan_review_method": "auto",
+  "retry_count": 0,
+  "last_error": null,
+  "evidence": {
+    "harvest": {
+      "integrations": [
+        {
+          "package": "fast-csv",
+          "version": "5.0.7",
+          "license": "mit",
+          "pluginName": "dsh-tool-ext-fast-csv",
+          "tool": "probe",
+          "mode": "probe",
+          "installed": true,
+          "compiled": true,
+          "executed": true,
+          "score": 0.81,
+          "validatorFailures": [],
+          "verify": {
+            "httpStatus": 200,
+            "outputLength": 545,
+            "ok": true
+          },
+          "sourceUrl": "git+https://github.com/C2FO/fast-csv.git"
+        },
+        {
+          "package": "papaparse",
+          "version": "5.7.0",
+          "license": "mit",
+          "pluginName": "dsh-tool-ext-papaparse",
+          "tool": "to_json",
+          "mode": "recipe",
+          "installed": true,
+          "compiled": true,
+          "executed": true,
+          "score": 0.587,
+          "validatorFailures": [],
+          "verify": {
+            "httpStatus": 200,
+            "outputLength": 150,
+            "ok": true
+          },
+          "sourceUrl": "git+https://github.com/mholt/PapaParse.git"
+        },
+        {
+          "package": "csv-parser",
+          "version": "3.2.1",
+          "license": "mit",
+          "pluginName": "dsh-tool-ext-csv-parser",
+          "tool": "probe",
+          "mode": "probe",
+          "installed": true,
+          "compiled": true,
+          "executed": true,
+          "score": 0.97,
+          "validatorFailures": [],
+          "verify": {
+            "httpStatus": 200,
+            "outputLength": 1143,
+            "ok": true
+          },
+          "sourceUrl": "git+https://github.com/mafintosh/csv-parser.git"
+        },
+        {
+          "package": "shortid",
+          "version": "2.2.17",
+          "license": "mit",
+          "pluginName": "dsh-tool-ext-shortid",
+          "tool": "probe",
+          "mode": "probe",
+          "installed": true,
+          "compiled": true,
+          "executed": true,
+          "score": 0.656,
+          "validatorFailures": [],
+          "verify": {
+            "httpStatus": 200,
+            "outputLength": 238,
+            "ok": true
+          },
+          "sourceUrl": "git+https://github.com/dylang/shortid.git"
+        }
+      ]
+    }
+  },
+  "created_at": "2026-09-22T14:00:09.735Z",
+  "updated_at": "2026-09-22T14:03:04.877Z"
+}

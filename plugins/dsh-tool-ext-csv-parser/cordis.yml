@@ -1,0 +1,6 @@
+name: dsh-tool-ext-csv-parser
+version: 3.2.1
+description: Adapter for external package csv-parser (mit) - Streaming CSV parser that aims for maximum speed as well as compatibility with the csv-spectrum test suite
+public: true
+tools:
+  - probe
