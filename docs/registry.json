@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-21T08:04:40.252Z",
+  "generatedAt": "2026-09-22T14:04:40.429Z",
   "protocol": {
     "mcp": "stdio via official @modelcontextprotocol/sdk",
     "a2a": "v1.0 JSON-RPC via official @a2a-js/sdk",
     "rest": "POST /invoke {tool, input_data}"
   },
   "counts": {
-    "plugins": 23,
-    "tools": 23
+    "plugins": 28,
+    "tools": 28
   },
   "plugins": [
     {
@@ -74,6 +74,76 @@
         {
           "name": "dsh-tool-date-math.calc",
           "description": "Invoke calc",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-ext-csv-parser",
+      "version": "3.2.1",
+      "description": "Adapter for external package csv-parser (mit) - Streaming CSV parser that aims for maximum speed as well as compatibility with the csv-spectrum test suite",
+      "tools": [
+        {
+          "name": "dsh-tool-ext-csv-parser.probe",
+          "description": "Invoke probe",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-ext-fast-csv",
+      "version": "5.0.7",
+      "description": "Adapter for external package fast-csv (mit) - CSV parser and writer",
+      "tools": [
+        {
+          "name": "dsh-tool-ext-fast-csv.probe",
+          "description": "Invoke probe",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-ext-papaparse",
+      "version": "5.7.0",
+      "description": "Adapter for external package papaparse (mit) - Fast and powerful CSV parser for the browser that supports web workers and streaming large files. Converts CSV to JSON and JSON to CSV.",
+      "tools": [
+        {
+          "name": "dsh-tool-ext-papaparse.to_json",
+          "description": "Invoke to_json",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-ext-shortid",
+      "version": "2.2.17",
+      "description": "Adapter for external package shortid (mit) - Amazingly short non-sequential url-friendly unique id generator.",
+      "tools": [
+        {
+          "name": "dsh-tool-ext-shortid.probe",
+          "description": "Invoke probe",
+          "contract": {
+            "input_data": "string"
+          }
+        }
+      ]
+    },
+    {
+      "plugin": "dsh-tool-ext-validator",
+      "version": "13.15.35",
+      "description": "Adapter for external package validator (mit) - String validation and sanitization",
+      "tools": [
+        {
+          "name": "dsh-tool-ext-validator.check",
+          "description": "Invoke check",
           "contract": {
             "input_data": "string"
           }
