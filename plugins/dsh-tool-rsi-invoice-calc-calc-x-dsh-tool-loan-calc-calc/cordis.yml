@@ -1,6 +1,0 @@
-name: dsh-tool-rsi-invoice-calc-calc-x-dsh-tool-loan-calc-calc
-version: 0.1.0
-description: RSI-composed pipeline (feeds_into): dsh-tool-invoice-calc.calc -> dsh-tool-loan-calc.calc
-public: true
-tools:
-  - pipeline

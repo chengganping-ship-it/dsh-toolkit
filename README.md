@@ -83,6 +83,8 @@ npx dsh list               # 验证
 
 外部收割（`dsh rsi harvest`）：搜索 npm 生态 → 许可证/新鲜度/相关性门禁 → 安装 → 自动生成适配器插件（专用配方或通用探针）→ 编译 → 网关实测 → 只保留通过者，并在 `rsi/harvest-lineage.json` 记录来源与许可证。
 
+RSI 进化机制：--gens N 多代复利（上代优胜者成为下代组合材料）、负记忆（淘汰组合不再重复）、深度守卫（禁止 RSI×RSI 套娃）、稳定短哈希命名、适应度阈值 --min-score（低于阈值直接淘汰）、连贯性适应度（下游失败/空转/冗余/自省探针都要扣分）。
+
 状态机借鉴 JEO：`plan → execute → verify → cleanup → done`，计划哈希门禁（已批准的同哈希计划不重复评审、feedback 必须改计划）、checkpoint 续跑、retry_count 达到 3 提示人工介入。
 
 ```bash

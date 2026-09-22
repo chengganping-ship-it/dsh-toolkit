@@ -1,0 +1,6 @@
+name: dsh-tool-rsi-abd12b0f
+version: 0.1.0
+description: RSI pipeline [abd12b0f]: dsh-tool-date-math.calc -> dsh-tool-loan-calc.calc (feeds_into)
+public: true
+tools:
+  - pipeline

@@ -1,6 +1,0 @@
-name: dsh-tool-rsi-date-math-calc-x-dsh-tool-loan-calc-calc
-version: 0.1.0
-description: RSI-composed pipeline (feeds_into): dsh-tool-date-math.calc -> dsh-tool-loan-calc.calc
-public: true
-tools:
-  - pipeline

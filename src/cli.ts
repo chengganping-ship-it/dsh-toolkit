@@ -163,8 +163,12 @@ async function main(): Promise<void> {
         const generations = gensIdx >= 0 ? Number(args[gensIdx + 1]) || 1 : 1;
         const keep = keepIdx >= 0 ? Number(args[keepIdx + 1]) || 2 : 2;
         const gate = args.includes('--manual') ? 'manual' : 'auto';
-        console.log(`RSI: ${generations} generation(s), keep top ${keep}, gate=${gate}`);
-        const result = await runRsi({ generations, keep, gate });
+        const msIdx = args.indexOf('--min-score');
+        const minScore = msIdx >= 0 ? Number(args[msIdx + 1]) || 0.8 : 0.8;
+        console.log(
+          `RSI: ${generations} generation(s), keep top ${keep}, gate=${gate}, minScore=${minScore}`,
+        );
+        const result = await runRsi({ generations, keep, gate, minScore });
         for (const h of result.lineage) {
           console.log(
             `  gen ${h.generation}: candidates=${h.candidates} gate=${h.gate} kept=[${h.kept.join(', ')}] rejected=${h.rejected.length}`,

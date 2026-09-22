@@ -1,0 +1,6 @@
+name: dsh-tool-ext-yaml-eslint-parser
+version: 2.1.0
+description: Adapter for external package yaml-eslint-parser (mit) - A YAML parser that produces output compatible with ESLint
+public: true
+tools:
+  - probe

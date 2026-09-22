@@ -1,17 +1,29 @@
 [
   {
     "generation": 1,
-    "startedAt": "2026-09-21T08:02:58.992Z",
+    "startedAt": "2026-09-22T14:14:17.321Z",
     "embedder": "ollama:nomic-embed-text",
+    "planHash": "51ff7a03617078557ca55aface8f447002f576d834448cd1b1eb541c5d3cb511",
+    "gate": "approved",
     "candidates": 3,
     "kept": [
-      "dsh-tool-date-math.calc+dsh-tool-loan-calc.calc",
-      "dsh-tool-invoice-calc.calc+dsh-tool-loan-calc.calc"
+      "dsh-tool-ext-csv-parser.probe+dsh-tool-ext-fast-csv.probe",
+      "dsh-tool-date-math.calc+dsh-tool-loan-calc.calc"
     ],
     "rejected": [
-      "dsh-tool-fx-rates.convert+dsh-tool-unit-convert.convert"
+      "dsh-tool-invoice-calc.calc+dsh-tool-loan-calc.calc"
     ],
     "evaluations": [
+      {
+        "id": "dsh-tool-ext-csv-parser.probe+dsh-tool-ext-fast-csv.probe",
+        "compiled": true,
+        "executed": true,
+        "score": 1,
+        "validatorFailures": [],
+        "notes": [
+          "output length 2097"
+        ]
+      },
       {
         "id": "dsh-tool-date-math.calc+dsh-tool-loan-calc.calc",
         "compiled": true,
@@ -31,6 +43,122 @@
         "notes": [
           "output length 242"
         ]
+      }
+    ],
+    "verify": [
+      {
+        "plugin": "dsh-tool-rsi-5d00c650",
+        "httpStatus": 200,
+        "accepted": true,
+        "outputLength": 2097,
+        "ok": true
+      },
+      {
+        "plugin": "dsh-tool-rsi-abd12b0f",
+        "httpStatus": 200,
+        "accepted": true,
+        "outputLength": 300,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "generation": 1,
+    "startedAt": "2026-09-22T14:14:17.321Z",
+    "embedder": "ollama:nomic-embed-text",
+    "planHash": "51ff7a03617078557ca55aface8f447002f576d834448cd1b1eb541c5d3cb511",
+    "gate": "approved",
+    "candidates": 3,
+    "kept": [
+      "dsh-tool-ext-csv-parser.probe+dsh-tool-ext-fast-csv.probe",
+      "dsh-tool-date-math.calc+dsh-tool-loan-calc.calc"
+    ],
+    "rejected": [
+      "dsh-tool-invoice-calc.calc+dsh-tool-loan-calc.calc"
+    ],
+    "evaluations": [
+      {
+        "id": "dsh-tool-ext-csv-parser.probe+dsh-tool-ext-fast-csv.probe",
+        "compiled": true,
+        "executed": true,
+        "score": 1,
+        "validatorFailures": [],
+        "notes": [
+          "output length 2097"
+        ]
+      },
+      {
+        "id": "dsh-tool-date-math.calc+dsh-tool-loan-calc.calc",
+        "compiled": true,
+        "executed": true,
+        "score": 0.95,
+        "validatorFailures": [],
+        "notes": [
+          "output length 300"
+        ]
+      },
+      {
+        "id": "dsh-tool-invoice-calc.calc+dsh-tool-loan-calc.calc",
+        "compiled": true,
+        "executed": true,
+        "score": 0.891,
+        "validatorFailures": [],
+        "notes": [
+          "output length 242"
+        ]
+      }
+    ],
+    "verify": [
+      {
+        "plugin": "dsh-tool-rsi-5d00c650",
+        "httpStatus": 200,
+        "accepted": true,
+        "outputLength": 2097,
+        "ok": true
+      },
+      {
+        "plugin": "dsh-tool-rsi-abd12b0f",
+        "httpStatus": 200,
+        "accepted": true,
+        "outputLength": 300,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "generation": 2,
+    "startedAt": "2026-09-22T14:14:22.722Z",
+    "embedder": "ollama:nomic-embed-text",
+    "planHash": "42691faff496c036ca2841518e627f8eca22c47b378ff6b1a5225dc43c23d653",
+    "gate": "approved",
+    "candidates": 3,
+    "kept": [
+      "dsh-tool-ext-csv-parser.probe+dsh-tool-ext-fast-csv.probe",
+      "dsh-tool-date-math.calc+dsh-tool-loan-calc.calc"
+    ],
+    "rejected": [
+      "dsh-tool-fx-rates.convert+dsh-tool-unit-convert.convert"
+    ],
+    "evaluations": [
+      {
+        "id": "dsh-tool-ext-csv-parser.probe+dsh-tool-ext-fast-csv.probe",
+        "compiled": true,
+        "executed": true,
+        "score": 1,
+        "validatorFailures": [],
+        "notes": [
+          "output length 2097"
+        ]
+      },
+      {
+        "id": "dsh-tool-date-math.calc+dsh-tool-loan-calc.calc",
+        "compiled": true,
+        "executed": true,
+        "score": 0.95,
+        "validatorFailures": [],
+        "notes": [
+          "output length 300"
+        ]
       },
       {
         "id": "dsh-tool-fx-rates.convert+dsh-tool-unit-convert.convert",
@@ -41,6 +169,208 @@
         "notes": [
           "output length 265"
         ]
+      }
+    ],
+    "verify": [
+      {
+        "plugin": "dsh-tool-rsi-5d00c650",
+        "httpStatus": 200,
+        "accepted": true,
+        "outputLength": 2097,
+        "ok": true
+      },
+      {
+        "plugin": "dsh-tool-rsi-abd12b0f",
+        "httpStatus": 200,
+        "accepted": true,
+        "outputLength": 300,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "generation": 1,
+    "startedAt": "2026-09-22T14:16:43.644Z",
+    "embedder": "ollama:nomic-embed-text",
+    "planHash": "a62508590dc782add9114dd080d5ffaa5bce2bba5475f3240440c5b4614c408b",
+    "gate": "approved",
+    "candidates": 3,
+    "kept": [
+      "dsh-tool-ext-csv-parser.probe+dsh-tool-ext-fast-csv.probe",
+      "dsh-tool-ext-csv-parser.probe+dsh-tool-ext-yaml-eslint-parser.probe"
+    ],
+    "rejected": [
+      "dsh-tool-ext-color-convert.probe+dsh-tool-ext-color.probe"
+    ],
+    "evaluations": [
+      {
+        "id": "dsh-tool-ext-csv-parser.probe+dsh-tool-ext-fast-csv.probe",
+        "compiled": true,
+        "executed": true,
+        "score": 1,
+        "validatorFailures": [],
+        "notes": [
+          "output length 2097"
+        ]
+      },
+      {
+        "id": "dsh-tool-ext-csv-parser.probe+dsh-tool-ext-yaml-eslint-parser.probe",
+        "compiled": true,
+        "executed": true,
+        "score": 1,
+        "validatorFailures": [],
+        "notes": [
+          "output length 1916"
+        ]
+      },
+      {
+        "id": "dsh-tool-ext-color-convert.probe+dsh-tool-ext-color.probe",
+        "compiled": true,
+        "executed": true,
+        "score": 0.962,
+        "validatorFailures": [],
+        "notes": [
+          "output length 532"
+        ]
+      }
+    ],
+    "verify": [
+      {
+        "plugin": "dsh-tool-rsi-5d00c650",
+        "httpStatus": 200,
+        "accepted": true,
+        "outputLength": 2097,
+        "ok": true
+      },
+      {
+        "plugin": "dsh-tool-rsi-91191f60",
+        "httpStatus": 200,
+        "accepted": true,
+        "outputLength": 1916,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "generation": 1,
+    "startedAt": "2026-09-22T14:17:08.798Z",
+    "embedder": "ollama:nomic-embed-text",
+    "planHash": "b437f82526f68df69bc794d7f679954bc17d6f219c43712c9603ade9a548d8ac",
+    "gate": "approved",
+    "candidates": 3,
+    "kept": [
+      "dsh-tool-date-math.calc+dsh-tool-loan-calc.calc",
+      "dsh-tool-ext-csv-parser.probe+dsh-tool-ext-fast-csv.probe"
+    ],
+    "rejected": [
+      "dsh-tool-ext-csv-parser.probe+dsh-tool-ext-yaml-eslint-parser.probe"
+    ],
+    "evaluations": [
+      {
+        "id": "dsh-tool-date-math.calc+dsh-tool-loan-calc.calc",
+        "compiled": true,
+        "executed": true,
+        "score": 0.95,
+        "validatorFailures": [],
+        "notes": [
+          "output length 300"
+        ]
+      },
+      {
+        "id": "dsh-tool-ext-csv-parser.probe+dsh-tool-ext-fast-csv.probe",
+        "compiled": true,
+        "executed": true,
+        "score": 0.7,
+        "validatorFailures": [],
+        "notes": [
+          "output length 2097",
+          "stage is an introspection probe (no data transformation)"
+        ]
+      },
+      {
+        "id": "dsh-tool-ext-csv-parser.probe+dsh-tool-ext-yaml-eslint-parser.probe",
+        "compiled": true,
+        "executed": true,
+        "score": 0.7,
+        "validatorFailures": [],
+        "notes": [
+          "output length 1916",
+          "stage is an introspection probe (no data transformation)"
+        ]
+      }
+    ],
+    "verify": [
+      {
+        "plugin": "dsh-tool-rsi-abd12b0f",
+        "httpStatus": 200,
+        "accepted": true,
+        "outputLength": 300,
+        "ok": true
+      },
+      {
+        "plugin": "dsh-tool-rsi-5d00c650",
+        "httpStatus": 200,
+        "accepted": true,
+        "outputLength": 2097,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "generation": 1,
+    "startedAt": "2026-09-22T14:18:11.949Z",
+    "embedder": "ollama:nomic-embed-text",
+    "planHash": "868ca51da19fa11ede619552f15a8939494d5de486f8cc2bd43fdf91b0be0f01",
+    "gate": "approved",
+    "candidates": 3,
+    "kept": [
+      "dsh-tool-date-math.calc+dsh-tool-loan-calc.calc"
+    ],
+    "rejected": [
+      "dsh-tool-ext-csv-parser.probe+dsh-tool-ext-fast-csv.probe",
+      "dsh-tool-color-kit.analyze+dsh-tool-ext-color.probe"
+    ],
+    "evaluations": [
+      {
+        "id": "dsh-tool-date-math.calc+dsh-tool-loan-calc.calc",
+        "compiled": true,
+        "executed": true,
+        "score": 0.95,
+        "validatorFailures": [],
+        "notes": [
+          "output length 300"
+        ]
+      },
+      {
+        "id": "dsh-tool-ext-csv-parser.probe+dsh-tool-ext-fast-csv.probe",
+        "compiled": true,
+        "executed": true,
+        "score": 0.7,
+        "validatorFailures": [],
+        "notes": [
+          "output length 2097",
+          "stage is an introspection probe (no data transformation)"
+        ]
+      },
+      {
+        "id": "dsh-tool-color-kit.analyze+dsh-tool-ext-color.probe",
+        "compiled": true,
+        "executed": true,
+        "score": 0.625,
+        "validatorFailures": [],
+        "notes": [
+          "output length 413",
+          "stage is an introspection probe (no data transformation)"
+        ]
+      }
+    ],
+    "verify": [
+      {
+        "plugin": "dsh-tool-rsi-abd12b0f",
+        "httpStatus": 200,
+        "accepted": true,
+        "outputLength": 300,
+        "ok": true
       }
     ]
   }

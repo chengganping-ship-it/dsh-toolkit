@@ -1,0 +1,6 @@
+name: dsh-tool-ext-color-convert
+version: 3.1.3
+description: Adapter for external package color-convert (mit) - Plain color conversion functions
+public: true
+tools:
+  - probe

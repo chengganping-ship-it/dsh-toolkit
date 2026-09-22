@@ -1,173 +1,158 @@
 [
   {
     "generation": 1,
-    "startedAt": "2026-09-22T14:03:04.876Z",
+    "startedAt": "2026-09-22T14:16:34.516Z",
     "queries": [
-      "markdown to html",
-      "unique id generator",
-      "csv parser"
+      "yaml parser",
+      "text similarity",
+      "html sanitizer",
+      "color conversion"
     ],
-    "planHash": "12dbe222f6a306090393477f9b2d8c4483b3b195067593395a9bbd06b6c638c6",
+    "planHash": "06d122512477779056f78e95cd1718e2e52c3e14a429dc1cb7aa39ddb31c29d0",
     "gate": "approved",
     "selected": [
-      "fast-csv",
-      "papaparse",
-      "csv-parser",
-      "shortid"
+      "color-convert",
+      "color",
+      "yaml-eslint-parser"
     ],
     "integrations": [
       {
-        "package": "fast-csv",
-        "version": "5.0.7",
+        "package": "color-convert",
+        "version": "3.1.3",
         "license": "mit",
-        "pluginName": "dsh-tool-ext-fast-csv",
+        "pluginName": "dsh-tool-ext-color-convert",
         "tool": "probe",
         "mode": "probe",
         "installed": true,
         "compiled": true,
         "executed": true,
-        "score": 0.81,
+        "score": 0.631,
         "validatorFailures": [],
         "verify": {
           "httpStatus": 200,
-          "outputLength": 545,
+          "outputLength": 188,
           "ok": true
         },
-        "sourceUrl": "git+https://github.com/C2FO/fast-csv.git"
+        "sourceUrl": "git+https://github.com/Qix-/color-convert.git"
       },
       {
-        "package": "papaparse",
-        "version": "5.7.0",
+        "package": "color",
+        "version": "5.0.3",
         "license": "mit",
-        "pluginName": "dsh-tool-ext-papaparse",
-        "tool": "to_json",
-        "mode": "recipe",
-        "installed": true,
-        "compiled": true,
-        "executed": true,
-        "score": 0.587,
-        "validatorFailures": [],
-        "verify": {
-          "httpStatus": 200,
-          "outputLength": 150,
-          "ok": true
-        },
-        "sourceUrl": "git+https://github.com/mholt/PapaParse.git"
-      },
-      {
-        "package": "csv-parser",
-        "version": "3.2.1",
-        "license": "mit",
-        "pluginName": "dsh-tool-ext-csv-parser",
+        "pluginName": "dsh-tool-ext-color",
         "tool": "probe",
         "mode": "probe",
         "installed": true,
         "compiled": true,
         "executed": true,
-        "score": 0.97,
+        "score": 0.636,
         "validatorFailures": [],
         "verify": {
           "httpStatus": 200,
-          "outputLength": 1143,
+          "outputLength": 198,
           "ok": true
         },
-        "sourceUrl": "git+https://github.com/mafintosh/csv-parser.git"
+        "sourceUrl": "git+https://github.com/Qix-/color.git"
       },
       {
-        "package": "shortid",
-        "version": "2.2.17",
+        "package": "yaml-eslint-parser",
+        "version": "2.1.0",
         "license": "mit",
-        "pluginName": "dsh-tool-ext-shortid",
+        "pluginName": "dsh-tool-ext-yaml-eslint-parser",
         "tool": "probe",
         "mode": "probe",
         "installed": true,
         "compiled": true,
         "executed": true,
-        "score": 0.656,
+        "score": 0.72,
         "validatorFailures": [],
         "verify": {
           "httpStatus": 200,
-          "outputLength": 238,
+          "outputLength": 364,
           "ok": true
         },
-        "sourceUrl": "git+https://github.com/dylang/shortid.git"
+        "sourceUrl": "git+https://github.com/ota-meshi/yaml-eslint-parser.git"
       }
     ],
     "rejected": [
       {
-        "name": "yeast",
+        "name": "pure-color",
         "reason": "not updated in 2 years"
       },
       {
-        "name": "showdown",
+        "name": "chartjs-color",
         "reason": "not updated in 2 years"
       },
       {
-        "name": "uniqid",
+        "name": "@sphinxxxx/color-conversion",
         "reason": "not updated in 2 years"
       },
       {
-        "name": "remark-html",
-        "reason": "not updated in 2 years"
-      },
-      {
-        "name": "neat-csv",
-        "reason": "not updated in 2 years"
-      },
-      {
-        "name": "csv-streamify",
-        "reason": "not updated in 2 years"
-      },
-      {
-        "name": "devextreme-showdown",
-        "reason": "not updated in 2 years"
-      },
-      {
-        "name": "nest-csv-parser",
-        "reason": "not updated in 2 years"
-      },
-      {
-        "name": "nano-markdown",
-        "reason": "not updated in 2 years"
-      },
-      {
-        "name": "incremental-csv-parser",
-        "reason": "not updated in 2 years"
-      },
-      {
-        "name": "snowflake-id",
-        "reason": "not updated in 2 years"
-      },
-      {
-        "name": "xid-js",
-        "reason": "not updated in 2 years"
-      },
-      {
-        "name": "@nuxtjs/markdownit-loader",
-        "reason": "not updated in 2 years"
-      },
-      {
-        "name": "gulp-markdown",
-        "reason": "not updated in 2 years"
-      },
-      {
-        "name": "markdown-styles",
-        "reason": "not updated in 2 years"
-      },
-      {
-        "name": "short-uid",
+        "name": "yamlparser",
         "reason": "license not permissive (unknown)"
       },
       {
-        "name": "shortid32",
+        "name": "sanitizer",
         "reason": "not updated in 2 years"
       },
       {
-        "name": "markdown-to-html-converter",
+        "name": "insane",
         "reason": "not updated in 2 years"
       },
       {
-        "name": "uniquid",
+        "name": "node-yaml",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "vue-3-sanitize",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "colr-convert",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "colr",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "sanitize-markdown",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "v-sanitize",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "color-conversion-rgb",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "@vtex/insane",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "node-yaml-parser",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "enhanced-yaml",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "simtext",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "instant-yaml",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "@testyourai/jest",
+        "reason": "not updated in 2 years"
+      },
+      {
+        "name": "text-similarity-scorer",
         "reason": "not updated in 2 years"
       }
     ]

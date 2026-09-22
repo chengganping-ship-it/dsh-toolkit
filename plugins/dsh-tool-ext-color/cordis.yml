@@ -1,0 +1,6 @@
+name: dsh-tool-ext-color
+version: 5.0.3
+description: Adapter for external package color (mit) - Color conversion and manipulation with CSS string support
+public: true
+tools:
+  - probe

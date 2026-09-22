@@ -1,5 +1,6 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import * as crypto from 'node:crypto';
 import { execSync } from 'node:child_process';
 import { discoverPlugins, flattenTools } from '../bridge/loader.js';
 import { defaultValidators } from '../loop/validators.js';
@@ -69,6 +70,61 @@ export interface VerifyEvidence {
   ok: boolean;
 }
 
+/** Stage-failure markers: a pipeline whose downstream stage failed is not fit. */
+const STAGE_FAILURE_MARKERS = [
+  /执行失败/,
+  /需要桥接/,
+  /missing handler/i,
+  /no executable handler/i,
+  /\[missing /,
+  /外部适配器执行失败/,
+  /管道执行失败/,
+];
+
+/**
+ * Coherence-aware fitness. Base quality comes from the L3 critique; on top of
+ * that we penalize validator failures, downstream stage failures, no-op
+ * pipelines (stage B echoing stage A) and redundancy (stage A text repeated).
+ */
+export function scorePipeline(output: string, stageA: string, stageB: string): {
+  score: number;
+  notes: string[];
+} {
+  const notes: string[] = [];
+  const failed = defaultValidators().map((v) => v(output)).filter((r) => !r.passed);
+  let score = selfCritique(output).overall;
+
+  for (const m of STAGE_FAILURE_MARKERS) {
+    if (m.test(output)) {
+      score -= 0.35;
+      notes.push(`stage failure marker: ${m}`);
+      break;
+    }
+  }
+  if (stageB.trim().length === 0) {
+    score -= 0.3;
+    notes.push('stage B produced empty output');
+  }
+  if (stageA.trim() === stageB.trim() && stageA.trim().length > 0) {
+    score -= 0.25;
+    notes.push('no-op pipeline (stage B echoed stage A)');
+  }
+  // an introspection probe is not a data transformation - composing it adds no value
+  if (/导出成员/.test(stageA) || /导出成员/.test(stageB)) {
+    score -= 0.3;
+    notes.push('stage is an introspection probe (no data transformation)');
+  }
+  // redundancy: more than half of stage A reappears verbatim in stage B
+  if (stageA.length > 200 && stageB.includes(stageA.slice(0, Math.floor(stageA.length * 0.6)))) {
+    score -= 0.1;
+    notes.push('redundant composition');
+  }
+  score -= failed.length * 0.1;
+  if (failed.length) notes.push(`validator failures: ${failed.map((f) => f.validator).join(',')}`);
+
+  return { score: Number(Math.max(0, score).toFixed(3)), notes };
+}
+
 const SAMPLE_BY_TOOL: Record<string, string> = {
   'dsh-tool-text-summary.summarize': 'top=2\n第一句用于摘要测试。第二句包含数字 42。',
   'dsh-tool-json-format.format': '{"rsi":true,"n":1}',
@@ -85,6 +141,7 @@ export function proposeCandidates(
   edges: RelationEdge[],
   available: string[],
   limit = 3,
+  avoid: Set<string> = new Set(),
 ): Candidate[] {
   const have = new Set(available);
   const out: Candidate[] = [];
@@ -93,26 +150,58 @@ export function proposeCandidates(
   for (const e of edges.sort((a, b) => b.score - a.score)) {
     if (!have.has(e.source) || !have.has(e.target)) continue;
     if (e.source === e.target) continue;
+    // depth guard: never stack two generated pipelines (avoids RSI x RSI nesting)
+    if (isGenerated(e.source) && isGenerated(e.target)) continue;
     const key = [e.source, e.target].sort().join('+');
     if (seen.has(key)) continue;
+    // negative memory: do not re-propose combinations that already failed
+    if (avoid.has(key)) continue;
     seen.add(key);
 
-    const slug = key
-      .replace(/^dsh-tool-/, '')
-      .replace(/\./g, '-')
-      .replace(/\+/g, '-x-')
-      .slice(0, 48);
+    // stable short identity instead of nested name explosion
+    const slug = crypto.createHash('sha1').update(key).digest('hex').slice(0, 8);
     const name = `dsh-tool-rsi-${slug}`;
     out.push({
       id: key,
       name,
-      description: `RSI-composed pipeline (${e.predicate}): ${e.source} -> ${e.target}`,
+      description: `RSI pipeline [${slug}]: ${e.source} -> ${e.target} (${e.predicate})`,
       members: [e.source, e.target],
       source: renderPipelineSource(name, e.predicate, e.source, e.target),
     });
     if (out.length >= limit) break;
   }
   return out;
+}
+
+export function isGenerated(fq: string): boolean {
+  return fq.startsWith('dsh-tool-rsi-');
+}
+
+/** Cross-run memory: previously rejected combinations are not retried. */
+export function loadRsiMemory(workDir: string): {
+  avoid: Set<string>;
+  kept: Set<string>;
+  generations: number;
+} {
+  const file = path.join(workDir, 'rsi', 'lineage.json');
+  const avoid = new Set<string>();
+  const kept = new Set<string>();
+  let generations = 0;
+  if (!fs.existsSync(file)) return { avoid, kept, generations };
+  try {
+    const history = JSON.parse(fs.readFileSync(file, 'utf8')) as Lineage[];
+    generations = history.length;
+    for (const h of history) {
+      for (const id of h.rejected) avoid.add(id);
+      for (const id of h.kept) {
+        kept.add(id);
+        avoid.delete(id); // a combination kept later is allowed again
+      }
+    }
+  } catch {
+    /* ignore corrupt memory */
+  }
+  return { avoid, kept, generations };
 }
 
 /** Human-readable plan document (the artifact reviewed by the plan gate). */
@@ -221,6 +310,8 @@ export interface RsiOptions {
   limitCandidates?: number;
   /** 'auto' (default, deterministic) or 'manual' (requires DSH_RSI_APPROVAL=1) */
   gate?: 'auto' | 'manual';
+  /** fitness bar: candidates below this score are culled (default 0.8) */
+  minScore?: number;
 }
 
 export interface RsiResult {
@@ -234,6 +325,7 @@ export async function runRsi(opts: RsiOptions = {}): Promise<RsiResult> {
   const workDir = opts.workDir ?? process.cwd();
   const limitCandidates = opts.limitCandidates ?? 3;
   const gateMode = opts.gate ?? 'auto';
+  const minScore = opts.minScore ?? 0.8;
 
   const history: Lineage[] = [];
   let state = loadState(workDir) ?? newState('rsi: evolve plugin candidates from relation graph');
@@ -243,6 +335,14 @@ export async function runRsi(opts: RsiOptions = {}): Promise<RsiResult> {
   }
   saveState(state, workDir);
 
+  const memory = loadRsiMemory(workDir);
+  const avoid = new Set(memory.avoid);
+  if (memory.generations > 0) {
+    console.error(
+      `[rsi] memory: ${memory.generations} prior generation(s), ${avoid.size} avoided combination(s), ${memory.kept.size} survivor(s)`,
+    );
+  }
+
   for (let gen = 1; gen <= generations; gen++) {
     const startedAt = new Date().toISOString();
 
@@ -251,7 +351,7 @@ export async function runRsi(opts: RsiOptions = {}): Promise<RsiResult> {
     const graph = await buildRelationGraph();
     const { plugins } = await discoverPlugins();
     const available = flattenTools(plugins).map((t) => t.fqName);
-    const candidates = proposeCandidates(graph.edges, available, limitCandidates);
+    const candidates = proposeCandidates(graph.edges, available, limitCandidates, avoid);
     const planText = renderPlan(candidates, graph.embedder, keep);
     fs.mkdirSync(path.join(workDir, '.dsh', 'plans'), { recursive: true });
     fs.writeFileSync(path.join(workDir, '.dsh', 'plans', `rsi-gen${gen}.md`), planText);
@@ -330,20 +430,33 @@ export async function runRsi(opts: RsiOptions = {}): Promise<RsiResult> {
         const out = await tryExecute(c);
         if (out !== null) {
           ev.executed = true;
-          const failed = defaultValidators().map((v) => v(out)).filter((r) => !r.passed);
-          ev.validatorFailures = failed.map((f) => f.validator);
-          ev.score = Number(
-            Math.max(0, selfCritique(out).overall - failed.length * 0.1).toFixed(3),
-          );
-          ev.notes.push(`output length ${out.length}`);
+          const stages = splitStages(out);
+          const scored = scorePipeline(out, stages.a, stages.b);
+          ev.score = scored.score;
+          ev.notes = [`output length ${out.length}`, ...scored.notes];
+          ev.validatorFailures = defaultValidators()
+            .map((v) => v(out))
+            .filter((r) => !r.passed)
+            .map((f) => f.validator);
         }
       }
       evaluations.push(ev);
     }
 
     evaluations.sort((a, b) => b.score - a.score);
-    const kept = evaluations.slice(0, keep).map((e) => e.id);
-    const rejected = evaluations.slice(keep).map((e) => e.id);
+    // evolution: survive only if above the fitness bar, then take the top K
+    const qualified = evaluations.filter((e) => e.score >= minScore && e.executed);
+    const kept = qualified.slice(0, keep).map((e) => e.id);
+    const rejected = evaluations
+      .filter((e) => !kept.includes(e.id))
+      .map((e) => e.id);
+    if (qualified.length < evaluations.length) {
+      console.error(
+        `[rsi] fitness bar ${minScore}: ${evaluations.length - qualified.length} candidate(s) below threshold`,
+      );
+    }
+    // negative memory: remember what lost so later generations skip it
+    for (const id of rejected) avoid.add(id);
 
     // ---------------- VERIFY (end-to-end through the REST gateway) ----------------
     enterPhase(state, 'verify');
@@ -383,9 +496,18 @@ export async function runRsi(opts: RsiOptions = {}): Promise<RsiResult> {
 
     const dir = path.join(workDir, 'rsi');
     fs.mkdirSync(dir, { recursive: true });
+    const lineageFile = path.join(dir, 'lineage.json');
+    let persisted: Lineage[] = [];
+    if (fs.existsSync(lineageFile)) {
+      try {
+        persisted = JSON.parse(fs.readFileSync(lineageFile, 'utf8')) as Lineage[];
+      } catch {
+        persisted = [];
+      }
+    }
     fs.writeFileSync(
-      path.join(dir, 'lineage.json'),
-      JSON.stringify(history, null, 2) + '\n',
+      lineageFile,
+      JSON.stringify([...persisted, ...history], null, 2) + '\n',
     );
 
     if (needsHumanEscalation(state)) {
@@ -458,4 +580,19 @@ async function tryExecute(c: Candidate): Promise<string | null> {
   } catch {
     return null;
   }
+}
+
+/** Split a generated pipeline's markdown into stage A / stage B sections. */
+export function splitStages(output: string): { a: string; b: string } {
+  const aMark = output.indexOf('## 阶段 A 输出');
+  const bMark = output.indexOf('## 阶段 B 输出');
+  if (aMark < 0 || bMark < 0) return { a: '', b: '' };
+  const cut = (s: string): string => {
+    const disclaimer = s.indexOf('> 免责声明');
+    return (disclaimer >= 0 ? s.slice(0, disclaimer) : s).trim();
+  };
+  return {
+    a: cut(output.slice(aMark + '## 阶段 A 输出'.length, bMark)),
+    b: cut(output.slice(bMark + '## 阶段 B 输出'.length)),
+  };
 }
